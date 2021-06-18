@@ -1,0 +1,29 @@
+{
+  "name": "artemis-nasa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-server": "cd server && npm install",
+    "install-client": "cd client && npm install",
+    "install": "npm run install-server && npm run install-client",
+    "server": "npm run watch --prefix server",
+    "client": "npm start --prefix client",
+    "watch": "npm-run-all --parallel server client",
+    "deploy": "npm run build --prefix client && npm start --prefix server",
+    "test": "npm run test --prefix server && npm run test --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felixHerder/artemis-nasa.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felixHerder/artemis-nasa/issues"
+  },
+  "homepage": "https://github.com/felixHerder/artemis-nasa#readme",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

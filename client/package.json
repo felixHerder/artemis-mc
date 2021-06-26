@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "arwes": "^1.0.0-alpha.5",
+    "@fontsource/material-icons": "^4.4.5",
+    "@fontsource/roboto": "^4.4.5",
+    "@material-ui/core": "^4.11.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",

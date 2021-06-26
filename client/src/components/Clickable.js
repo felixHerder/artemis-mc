@@ -1,4 +1,4 @@
-import { withSounds } from "arwes";
+
 
 const Clickable = props => {
   const {
@@ -20,4 +20,4 @@ const Clickable = props => {
   );
 };
 
-export default withSounds()(Clickable);
+export default Clickable;

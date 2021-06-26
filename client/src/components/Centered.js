@@ -1,4 +1,4 @@
-
+import { withStyles } from "arwes";
 
 const styles = () => ({
   root: {
@@ -26,4 +26,4 @@ const Centered = props => {
   );
 };
 
-export default Centered;
+export default withStyles(styles)(Centered);

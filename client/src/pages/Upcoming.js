@@ -1,4 +1,12 @@
 import { useMemo } from "react";
+import { 
+  withStyles,
+  Appear,
+  Link,
+  Paragraph,
+  Table,
+  Words,
+} from "arwes";
 
 import Clickable from "../components/Clickable";
 
@@ -10,7 +18,7 @@ const styles = () => ({
 });
 
 const Upcoming = props => {
-  const {
+  const { 
     entered,
     launches,
     classes,
@@ -22,10 +30,10 @@ const Upcoming = props => {
       .map((launch) => {
         return <tr key={String(launch.flightNumber)}>
           <td>
-            <Clickable style={{ color: "red" }}>
-              <a href="/" className={classes.link} onClick={() => abortLaunch(launch.flightNumber)}>
+            <Clickable style={{color:"red"}}>
+              <Link className={classes.link} onClick={() => abortLaunch(launch.flightNumber)}>
                 ✖
-              </a>
+              </Link>
             </Clickable>
           </td>
           <td>{launch.flightNumber}</td>
@@ -37,18 +45,18 @@ const Upcoming = props => {
       });
   }, [launches, abortLaunch, classes.link]);
 
-  return (
-    <>
-      <p>Upcoming missions including both SpaceX launches and newly scheduled Zero to Mastery rockets.</p>
-      <p >Warning! Clicking on the ✖ aborts the mission.</p>
-      <table style={{ tableLayout: "fixed" }}>
+  return <Appear id="upcoming" animate show={entered}>
+    <Paragraph>Upcoming missions including both SpaceX launches and newly scheduled Zero to Mastery rockets.</Paragraph>
+    <Words animate>Warning! Clicking on the ✖ aborts the mission.</Words>
+    <Table animate show={entered}>
+      <table style={{tableLayout: "fixed"}}>
         <thead>
           <tr>
-            <th style={{ width: "3rem" }}></th>
-            <th style={{ width: "3rem" }}>No.</th>
-            <th style={{ width: "10rem" }}>Date</th>
-            <th style={{ width: "11rem" }}>Mission</th>
-            <th style={{ width: "11rem" }}>Rocket</th>
+            <th style={{width: "3rem"}}></th>
+            <th style={{width: "3rem"}}>No.</th>
+            <th style={{width: "10rem"}}>Date</th>
+            <th style={{width: "11rem"}}>Mission</th>
+            <th style={{width: "11rem"}}>Rocket</th>
             <th>Destination</th>
           </tr>
         </thead>
@@ -56,8 +64,8 @@ const Upcoming = props => {
           {tableBody}
         </tbody>
       </table>
-    </>
-  );
+    </Table>
+  </Appear>;
 }
 
-export default Upcoming;
+export default withStyles(styles)(Upcoming);

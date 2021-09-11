@@ -1,0 +1,8 @@
+@mixin pad($amount){
+  padding: $amount;
+  &:after{
+    content: 'mixin after content';
+    display: block;
+    color : #aaa;
+  }
+}

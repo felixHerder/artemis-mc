@@ -3,11 +3,11 @@ const envMode = process.env.NODE_ENV;
 const HtmlWebpPlugin = require("html-webpack-plugin");
 const CssMinimizer = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const MiniCss = require("mini-css-extract-plugin");
-const SpeedMeasure = require("speed-measure-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const smp = new SpeedMeasure();
-module.exports = smp.wrap({
+
+const config = {
   entry: path.join(__dirname, "src", "index.tsx"),
   mode: envMode,
   devtool:false,
@@ -25,7 +25,7 @@ module.exports = smp.wrap({
       {
         test: /\.s?css$/,
         use: [
-          envMode == "development" ? "style-loader" : MiniCss.loader,
+          envMode === "development" ? "style-loader" : MiniCssExtractPlugin.loader,
           "css-loader",
           "sass-loader",
         ],
@@ -68,21 +68,39 @@ module.exports = smp.wrap({
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "js/[name].js",
-    assetModuleFilename: "img/[name][ext]",
+    assetModuleFilename: "assets/[name][ext]",
     clean: true,
+    // publicPath:'./'
   },
   devServer: {
     static: path.resolve(__dirname, "dist"),
     port: 3000,
     historyApiFallback: true,
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      }
+    }
   },
   plugins: [
     new HtmlWebpPlugin({
       filename: "index.html",
       template: path.join(__dirname, "src", "index.html"),
     }),
-    new MiniCss({
-      filename: "/css/[name].css",
+    new MiniCssExtractPlugin({
+      filename: "css/[name].css",
     }),
+    // new BundleAnalyzerPlugin({
+    //   analyzerMode: envMode === 'production'? "server" : "disabled"
+    // })
   ],
-});
+};
+
+//// Regular config
+module.exports = config;
+
+// Speed Measure Config
+// const SpeedMeasure = require("speed-measure-webpack-plugin");
+// const smp = new SpeedMeasure();
+// module.exports = smp.wrap(config);

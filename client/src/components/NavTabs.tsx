@@ -1,13 +1,31 @@
 import React from "react";
-import { Grid, Tabs, Tab, AppBar, Container, Typography, Box, Hidden, IconButton, Theme, Drawer,Toolbar } from "@material-ui/core";
-import { Menu, ChevronRight, DoubleArrow, Schedule, History } from "@material-ui/icons";
+import {
+  Grid,
+  Tabs,
+  Tab,
+  AppBar,
+  Container,
+  Typography,
+  Box,
+  Hidden,
+  IconButton,
+  Drawer,
+  Toolbar,
+  ListItemIcon,
+  ListItem,
+  List,
+  ListItemText,
+  Divider,
+} from "@material-ui/core";
+import { Menu, ChevronRight, DoubleArrow, Schedule, History, } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link as RouterLink } from "react-router-dom";
-import planet from "../Assets/jupiter_128.png";
+import planet from "../Assets/jupiter_32.png";
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     background: theme.palette.grey[800],
+    color: theme.palette.text.primary
   },
 }));
 export default function NavTabs(): JSX.Element {
@@ -22,11 +40,13 @@ export default function NavTabs(): JSX.Element {
             <Grid container justifyContent="center">
               <Grid item container xs={10} md={4} alignItems="center">
                 <img src={planet} width="24px" alt="planet logo" />
-                <Box ml={1}>
-                  <Typography variant="h6">Artemis Mission Control</Typography>
+                <Box ml={1} clone>
+                  <Typography variant="h6" component="h1">
+                    Artemis Mission Control
+                  </Typography>
                 </Box>
               </Grid>
-              <Grid item container xs={2}  md={8} alignItems="flex-end" justifyContent="flex-end">
+              <Grid item container xs={2} md={8} alignItems="flex-end" justifyContent="flex-end">
                 <Box display="inline-block">
                   <Hidden smDown>
                     <Tabs value={value} variant="standard" indicatorColor="primary" onChange={(e, nv) => setValue(nv)}>
@@ -46,10 +66,33 @@ export default function NavTabs(): JSX.Element {
           </Toolbar>
         </Container>
       </AppBar>
-      <Drawer variant="temporary" anchor="right" open={open}>
-        <IconButton onClick={() => setOpen(false)}>
-          <ChevronRight />
-        </IconButton>
+      <Drawer variant="temporary" anchor="right" open={open} onClose={() => setOpen(false)}>
+        <List component="nav" onClick={() => setOpen(false)}>
+          <ListItem button component={RouterLink} to="/launch">
+            <ListItemIcon>
+              <DoubleArrow />
+            </ListItemIcon>
+            <ListItemText primary="Launch" />
+          </ListItem>
+          <ListItem button component={RouterLink} to="/upcoming">
+            <ListItemIcon>
+              <Schedule />
+            </ListItemIcon>
+            <ListItemText primary="Upcoming" />
+          </ListItem>
+          <ListItem button component={RouterLink} to="/history">
+            <ListItemIcon>
+              <History />
+            </ListItemIcon>
+            <ListItemText primary="History" />
+          </ListItem>
+        </List>
+        <Divider />
+        <Box ml={1} mt="auto">
+          <IconButton size="medium" onClick={() => setOpen(false)}>
+            <ChevronRight />
+          </IconButton>
+        </Box>
       </Drawer>
     </>
   );

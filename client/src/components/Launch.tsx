@@ -1,32 +1,24 @@
 import React from "react";
-import {
-  Container,
-  Paper,
-  Typography,
-  Box,
-  Divider,
-  InputLabel,
-  FormControl,
-  TextField,
-  Button,
-  Select,
-  Grid,
-} from "@material-ui/core";
+import { Container, Paper, Typography, Box, Divider, InputLabel, FormControl, TextField, Button, Select, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.spacing(2),
     display: "flex",
-    flexDirection:"column",
-    justifyContent:"center",
-    minHeight:"80vh"
+    flexDirection: "column",
+    justifyContent: "center",
+    minHeight: "80vh",
   },
   form: {
     "& input[type='date']::-webkit-calendar-picker-indicator": {
       filter: "invert(1)",
     },
   },
+  launch:{
+    width:"100%",
+    minHeight: "4em"
+  }
 }));
 export default function Launch(): JSX.Element {
   const classes = useStyles();
@@ -34,11 +26,11 @@ export default function Launch(): JSX.Element {
     <Container maxWidth="md" className={classes.container}>
       <Paper variant="outlined" elevation={1} square>
         <Box m={2} clone>
-          <Typography variant="h4"  component="h2" align="center">
+          <Typography variant="h4" component="h2" align="center">
             Launch
           </Typography>
         </Box>
-        <Divider/>
+        <Divider />
         <Box p={2}>
           <Typography variant="body1" gutterBottom>
             Schedule a mission launch for interstellar travel to one of the Kepler Exoplanets.
@@ -58,12 +50,13 @@ export default function Launch(): JSX.Element {
         <Box my={1}>
           <Divider />
         </Box>
-        <Box p={1} mt={3} mb={2}>
+        <Box p={2}>
           <form noValidate autoComplete="off">
-            <Grid container xs={12} justifyContent="center">
-              <Grid item xs={12} sm={8} md={6} container spacing={2}>
+            <Grid container xs={12} justifyContent="space-between">
+              <Grid item sm={9} md={7} direction="row" container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
+                    classes={{ root: classes.form }}
                     fullWidth
                     id="launchDate"
                     label="Launch Date"
@@ -73,13 +66,13 @@ export default function Launch(): JSX.Element {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField fullWidth  id="misionName" label="Mission Name" variant="outlined" />
+                  <TextField fullWidth id="misionName" label="Mission Name" variant="outlined" />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField fullWidth id="rocketType" label="Rocket Type" variant="outlined" />
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControl fullWidth  variant="outlined">
+                  <FormControl fullWidth variant="outlined">
                     <InputLabel htmlFor="destination">Destination Exoplanet</InputLabel>
                     <Select id="destination" native label="Destination Exoplanet">
                       <option aria-label="None" value="" />
@@ -89,9 +82,9 @@ export default function Launch(): JSX.Element {
                   </FormControl>
                 </Grid>
               </Grid>
-              <Grid item xs={12} sm={4} md={6}>
-                <Box height="100%" display="flex" p={1} mt={1} justifyContent="flex-end" alignItems="flex-end">
-                  <Button  size="large" color="secondary" variant="contained">
+              <Grid item xs={12} sm={3} md={5}>
+                <Box height="100%" display="flex" alignItems="flex-end" pt={2}>
+                  <Button className={classes.launch} size="large" color="secondary" variant="contained">
                     Launch Mission
                   </Button>
                 </Box>

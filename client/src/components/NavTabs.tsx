@@ -27,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.grey[800],
     color: theme.palette.text.primary
   },
+  branding:{
+    [theme.breakpoints.down('xs')]:{
+      fontSize: "1rem"
+    }
+  }
 }));
 export default function NavTabs(): JSX.Element {
   const [value, setValue] = React.useState(0);
@@ -41,7 +46,7 @@ export default function NavTabs(): JSX.Element {
               <Grid item container xs={10} md={4} alignItems="center">
                 <img src={planet} width="24px" alt="planet logo" />
                 <Box ml={1} clone>
-                  <Typography variant="h6" component="h1">
+                  <Typography className={classes.branding} variant="h5" component="h1">
                     Artemis Mission Control
                   </Typography>
                 </Box>
@@ -49,7 +54,7 @@ export default function NavTabs(): JSX.Element {
               <Grid item container xs={2} md={8} alignItems="flex-end" justifyContent="flex-end">
                 <Box display="inline-block">
                   <Hidden smDown>
-                    <Tabs value={value} variant="standard" indicatorColor="primary" onChange={(e, nv) => setValue(nv)}>
+                    <Tabs value={value} variant="standard" indicatorColor="secondary" onChange={(e, nv) => setValue(nv)}>
                       <Tab icon={<DoubleArrow />} component={RouterLink} label="Launch" to="/launch" />
                       <Tab icon={<Schedule />} component={RouterLink} label="Upcoming" to="/upcoming" />
                       <Tab icon={<History />} component={RouterLink} label="History" to="/history" />

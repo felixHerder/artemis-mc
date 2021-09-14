@@ -5,9 +5,9 @@ import { Switch, Route, BrowserRouter } from "react-router-dom";
 
 import theme from "./theme";
 import NavTabs from "./components/NavTabs";
-import Launch from './components/Launch';
-import FixedBkg from './components/FixedBkg';
-
+import Launch from "./components/Launch";
+import History from "./components/History";
+import FixedBkg from "./components/FixedBkg";
 
 export default function App(): JSX.Element {
   return (
@@ -20,26 +20,13 @@ export default function App(): JSX.Element {
             <Launch />
           </Route>
           <Route path="/upcoming" exact>
-            <Container maxWidth="md">
-              <Paper>
-                <Box width="100%" height="100vh">
-                  <Typography variant="h3">Upcoming</Typography>
-                </Box>
-              </Paper>
-            </Container>
+            <History />
           </Route>
-
           <Route path="/history" exact>
-            <Container maxWidth="md">
-              <Paper>
-                <Box width="100%" height="100vh">
-                  <Typography variant="h3">History</Typography>
-                </Box>
-              </Paper>
-            </Container>
+            <History />
           </Route>
         </Switch>
-        <FixedBkg/>
+        <FixedBkg />
       </ThemeProvider>
     </BrowserRouter>
   );

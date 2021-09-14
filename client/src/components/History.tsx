@@ -13,16 +13,25 @@ import {
   Grid,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import jupiter from '../Assets/jupiter_128.png';
 
 const useStyles = makeStyles((theme) => ({
-
+  container: {
+    marginTop: theme.spacing(2),
+    display: "flex",
+    flexDirection:"column",
+    justifyContent:"center",
+    minHeight:"80vh"
+  },
+  bkg:{
+  }
 }));
 
 export default function History(): JSX.Element {
   const classes = useStyles();
   return (
     <Container maxWidth="md" className={classes.container}>
-      <Paper variant="outlined" elevation={1} square>
+      <Paper className={classes.bkg} variant="outlined" elevation={1} square>
         <Box m={2} clone>
           <Typography variant="h4"  component="h2" align="center">
             History

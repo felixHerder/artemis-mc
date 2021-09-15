@@ -1,7 +1,6 @@
 import React from "react";
-import { Container, Paper, Typography, Box, Divider, Table, TableHead, TableBody, TableRow, TableCell, TableContainer, Button } from "@material-ui/core";
+import { Container, Paper, Typography, Box, Divider, Table, TableHead, TableBody, TableRow, TableCell, TableContainer, } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import jupiter from "../Assets/jupiter_128.png";
 
 const useStyles = makeStyles((theme) => ({
   container: {

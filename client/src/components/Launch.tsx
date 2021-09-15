@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Paper, Typography, Box, Divider, InputLabel, FormControl, TextField, Button, Select, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import {PlanetData} from '../hooks/usePlanets'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -20,7 +21,10 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "4em"
   }
 }));
-export default function Launch(): JSX.Element {
+type LaunchProps = {
+  planets: PlanetData[]
+}
+export default function Launch({planets}: LaunchProps): JSX.Element {
   const classes = useStyles();
   return (
     <Container maxWidth="md" className={classes.container}>
@@ -52,7 +56,7 @@ export default function Launch(): JSX.Element {
         </Box>
         <Box p={2}>
           <form noValidate autoComplete="off">
-            <Grid container xs={12} justifyContent="space-between">
+            <Grid container justifyContent="space-between">
               <Grid item  sm={9} md={8} direction="row" container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
@@ -76,8 +80,9 @@ export default function Launch(): JSX.Element {
                     <InputLabel htmlFor="destination">Destination Exoplanet</InputLabel>
                     <Select id="destination" native label="Destination Exoplanet">
                       <option aria-label="None" value="" />
-                      <option value="10">Ten</option>
-                      <option value="20">Twenty</option>
+                      {planets.map((p,i)=>(
+                        <option key={i} value={p.kepler_name}>{p.kepler_name}</option>
+                      ))}
                     </Select>
                   </FormControl>
                 </Grid>

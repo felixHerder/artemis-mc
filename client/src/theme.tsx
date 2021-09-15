@@ -1,4 +1,3 @@
-import React from 'react';
 import {createTheme, responsiveFontSizes} from '@material-ui/core/styles'
 import {lightBlue,orange} from '@material-ui/core/colors';
 import '@fontsource/urbanist/latin.css';

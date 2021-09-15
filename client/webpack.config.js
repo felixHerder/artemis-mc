@@ -5,7 +5,7 @@ const CssMinimizer = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
+const Dotenv = require('dotenv-webpack');
 
 const config = {
   entry: path.join(__dirname, "src", "index.tsx"),
@@ -91,6 +91,10 @@ const config = {
     new MiniCssExtractPlugin({
       filename: "css/[name].css",
     }),
+    new Dotenv({
+      path:"./.env"
+    }),
+
     // new BundleAnalyzerPlugin({
     //   analyzerMode: envMode === 'production'? "server" : "disabled"
     // })

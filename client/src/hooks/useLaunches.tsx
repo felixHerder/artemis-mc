@@ -6,12 +6,12 @@ import {
   httpAbortLaunch,
 } from './requests';
 
-function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
+function useLaunches() {
   const [launches, saveLaunches] = useState([]);
   const [isPendingLaunch, setPendingLaunch] = useState(false);
 
   const getLaunches = useCallback(async () => {
-    const fetchedLaunches = await httpGetLaunches();
+    const fetchedLaunches :any = await httpGetLaunches();
     saveLaunches(fetchedLaunches);
   }, []);
 
@@ -19,10 +19,10 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
     getLaunches();
   }, [getLaunches]);
 
-  const submitLaunch = useCallback(async (e) => {
+  const submitLaunch = useCallback(async (e:any) => {
     e.preventDefault();
     // setPendingLaunch(true);
-    const data = new FormData(e.target);
+    const data :any = new FormData(e.target);
     const launchDate = new Date(data.get("launch-day"));
     const mission = data.get("mission-name");
     const rocket = data.get("rocket-name");
@@ -40,12 +40,11 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
       getLaunches();
       setTimeout(() => {
         setPendingLaunch(false);
-        onSuccessSound();
       }, 800);
     } else {
-      onFailureSound();
+      
     }
-  }, [getLaunches, onSuccessSound, onFailureSound]);
+  }, [getLaunches]);
 
   const abortLaunch = useCallback(async (id) => {
     const response = await httpAbortLaunch(id);
@@ -54,11 +53,10 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
     const success = false;
     if (success) {
       getLaunches();
-      onAbortSound();
     } else {
-      onFailureSound();
+
     }
-  }, [getLaunches, onAbortSound, onFailureSound]);
+  }, [getLaunches]);
 
   return {
     launches,

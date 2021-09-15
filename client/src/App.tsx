@@ -6,6 +6,7 @@ import { Switch, Route, BrowserRouter } from "react-router-dom";
 import theme from "./theme";
 import NavTabs from "./components/NavTabs";
 import Launch from "./components/Launch";
+import Upcoming from "./components/Upcoming";
 import History from "./components/History";
 import FixedBkg from "./components/FixedBkg";
 
@@ -20,7 +21,7 @@ export default function App(): JSX.Element {
             <Launch />
           </Route>
           <Route path="/upcoming" exact>
-            <History />
+            <Upcoming />
           </Route>
           <Route path="/history" exact>
             <History />

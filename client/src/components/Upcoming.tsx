@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "80vh",
   },
   tableHead: {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.secondary.main,
     borderBottomColor: theme.palette.primary.main,
     "& th":{
       color: theme.palette.secondary.contrastText,
@@ -33,20 +33,23 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function History(): JSX.Element {
+export default function Upcoming(): JSX.Element {
   const classes = useStyles();
   return (
     <Container maxWidth="md" className={classes.container}>
       <Paper variant="outlined" elevation={1} square>
         <Box m={2} clone>
           <Typography variant="h4" component="h2" align="center">
-            History
+            Upcoming
           </Typography>
         </Box>
         <Divider />
         <Box p={2}>
           <Typography variant="body1" color="textSecondary" gutterBottom>
-            History of missions including both SpaceX launches and newly scheduled ESA rockets.{" "}
+            Upcoming missions including both SpaceX launches and newly scheduled ESA rockets.{" "}
+          </Typography>
+          <Typography variant="body1" color="textSecondary">
+            Warning! Clicking on the ✖ aborts the mission.
           </Typography>
         </Box>
         <Box px={2} mb={2}>
@@ -59,6 +62,7 @@ export default function History(): JSX.Element {
                   <TableCell>Mission</TableCell>
                   <TableCell>Rocket</TableCell>
                   <TableCell>Destination</TableCell>
+                  <TableCell className={classes.closeCol}></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody className={classes.tableBody}>
@@ -68,6 +72,9 @@ export default function History(): JSX.Element {
                   <TableCell>Mission</TableCell>
                   <TableCell>Rocket</TableCell>
                   <TableCell>Destination</TableCell>
+                  <TableCell>
+                    <Button size="small">✖</Button>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>2</TableCell>
@@ -75,6 +82,9 @@ export default function History(): JSX.Element {
                   <TableCell>Mission</TableCell>
                   <TableCell>Rocket</TableCell>
                   <TableCell>Destination</TableCell>
+                  <TableCell>
+                    <Button size="small">✖</Button>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>3</TableCell>
@@ -82,6 +92,9 @@ export default function History(): JSX.Element {
                   <TableCell>Mission</TableCell>
                   <TableCell>Rocket</TableCell>
                   <TableCell>Destination</TableCell>
+                  <TableCell>
+                    <Button  size="small">✖</Button>
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>

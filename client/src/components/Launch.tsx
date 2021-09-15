@@ -32,13 +32,13 @@ export default function Launch(): JSX.Element {
         </Box>
         <Divider />
         <Box p={2}>
-          <Typography variant="body1" gutterBottom>
+          <Typography variant="body1" color="textSecondary" gutterBottom>
             Schedule a mission launch for interstellar travel to one of the Kepler Exoplanets.
           </Typography>
-          <Typography variant="body1" gutterBottom>
+          <Typography variant="body1" color="textSecondary" gutterBottom>
             Only confirmed planets matching the following criteria are available for the earliest scheduled missions:
           </Typography>
-          <Typography component="ul" color="textPrimary">
+          <Typography component="ul" color="textSecondary">
             <Typography component="li" variant="body2">
               Planetary radius &lt; 1.6 times Earth&apos;s radius
             </Typography>
@@ -53,7 +53,7 @@ export default function Launch(): JSX.Element {
         <Box p={2}>
           <form noValidate autoComplete="off">
             <Grid container xs={12} justifyContent="space-between">
-              <Grid item sm={9} md={7} direction="row" container spacing={2}>
+              <Grid item  sm={9} md={8} direction="row" container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
                     classes={{ root: classes.form }}
@@ -82,7 +82,7 @@ export default function Launch(): JSX.Element {
                   </FormControl>
                 </Grid>
               </Grid>
-              <Grid item xs={12} sm={3} md={5}>
+              <Grid item xs sm={3} md={4}>
                 <Box height="100%" display="flex" alignItems="flex-end" pt={2}>
                   <Button className={classes.launch} size="large" color="secondary" variant="contained">
                     Launch Mission

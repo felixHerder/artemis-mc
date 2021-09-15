@@ -28,9 +28,13 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary
   },
   branding:{
+    fontWeight:300,
     [theme.breakpoints.down('xs')]:{
-      fontSize: "1rem"
-    }
+      fontSize: "1rem",
+    },
+  },
+  drawerList:{
+    width:theme.spacing(24),
   }
 }));
 export default function NavTabs(): JSX.Element {
@@ -71,8 +75,8 @@ export default function NavTabs(): JSX.Element {
           </Toolbar>
         </Container>
       </AppBar>
-      <Drawer variant="temporary" anchor="right" open={open} onClose={() => setOpen(false)}>
-        <List component="nav" onClick={() => setOpen(false)}>
+      <Drawer  variant="temporary" anchor="right" open={open} onClose={() => setOpen(false)}>
+        <List  className={classes.drawerList} component="nav" onClick={() => setOpen(false)}>
           <ListItem button component={RouterLink} to="/launch">
             <ListItemIcon>
               <DoubleArrow />

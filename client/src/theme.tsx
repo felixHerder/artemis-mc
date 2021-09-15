@@ -16,14 +16,10 @@ const  theme = createTheme({
   typography:{
     fontFamily:'"Urbanist","Helvetica", "Arial", sans-serif'
   },
-  custom:{
-    paperBorder:"#ff0000"
-  },
   overrides:{
     MuiPaper:{
       outlined:{
         borderColor: `${lightBlue[900]}88`
-        
       }
     },
     MuiAppBar:{
@@ -34,22 +30,16 @@ const  theme = createTheme({
     },
     MuiTypography:{
       h4:{
-        fontWeight: 200
+        fontWeight: 100,
+        color: orange[100]
+      }
+    },
+    MuiTableCell:{
+      root:{
+        borderBottomColor: `${lightBlue[900]}44`,
       }
     }
   }
 });
 
-declare module '@material-ui/core/styles/createTheme' {
-  interface Theme {
-    custom: {
-      paperBorder: React.CSSProperties['color'],
-    }
-  }
-  interface ThemeOptions {
-    custom: {
-      paperBorder: React.CSSProperties['color']
-    }
-  }
-}
 export default responsiveFontSizes(theme);

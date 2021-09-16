@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Paper, Typography, Box, Divider, InputLabel, FormControl, TextField, Button, Select, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import {PlanetData} from '../hooks/usePlanets'
+import { TransitionProps } from "@material-ui/core/transitions/transition";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,13 +22,13 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "4em"
   }
 }));
-type LaunchProps = {
+type LaunchProps = TransitionProps & {
   planets: PlanetData[]
 }
-export default function Launch({planets}: LaunchProps): JSX.Element {
+export default function Launch({planets,...props}: LaunchProps): JSX.Element {
   const classes = useStyles();
   return (
-    <Container maxWidth="md" className={classes.container}>
+    <Container {...props} maxWidth="md" className={classes.container}>
       <Paper variant="outlined" elevation={1} square>
         <Box m={2} clone>
           <Typography variant="h4" component="h2" align="center">

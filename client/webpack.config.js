@@ -10,7 +10,7 @@ const Dotenv = require('dotenv-webpack');
 const config = {
   entry: path.join(__dirname, "src", "index.tsx"),
   mode: envMode,
-  devtool:false,
+  devtool:"eval-source-map",
   module: {
     rules: [
       {
@@ -75,6 +75,7 @@ const config = {
   devServer: {
     static: path.resolve(__dirname, "dist"),
     port: 3000,
+    hot: true,
     historyApiFallback: true,
     client: {
       overlay: {

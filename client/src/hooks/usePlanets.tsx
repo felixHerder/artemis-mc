@@ -16,6 +16,7 @@ function usePlanets() : PlanetData[] {
   useEffect(() => {
     getPlanets();
   }, [getPlanets]);
+
   return planets;
 }
 

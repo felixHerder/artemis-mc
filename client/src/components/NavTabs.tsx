@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SetStateAction } from "react";
 import {
   Grid,
   Tabs,
@@ -37,8 +37,12 @@ const useStyles = makeStyles((theme) => ({
     width:theme.spacing(24),
   }
 }));
-export default function NavTabs(): JSX.Element {
-  const [value, setValue] = React.useState(0);
+type NavTabProps = {
+  navState: number;
+  setNavState: React.Dispatch<SetStateAction<number>>
+}
+export default function NavTabs({navState,setNavState}: NavTabProps): JSX.Element {
+
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   return (
@@ -58,7 +62,7 @@ export default function NavTabs(): JSX.Element {
               <Grid item container xs={2} md={8} alignItems="flex-end" justifyContent="flex-end">
                 <Box display="inline-block">
                   <Hidden smDown>
-                    <Tabs value={value} variant="standard" indicatorColor="secondary" onChange={(e, nv) => setValue(nv)}>
+                    <Tabs value={navState} variant="standard" indicatorColor="secondary" onChange={(e, nv) => setNavState(nv)}>
                       <Tab icon={<DoubleArrow />} component={RouterLink} label="Launch" to="/launch" />
                       <Tab icon={<Schedule />} component={RouterLink} label="Upcoming" to="/upcoming" />
                       <Tab icon={<History />} component={RouterLink} label="History" to="/history" />

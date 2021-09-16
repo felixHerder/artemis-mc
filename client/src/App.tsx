@@ -1,7 +1,7 @@
 import React from "react";
-import { CssBaseline } from "@material-ui/core";
+import { CssBaseline, Fade, Slide, Zoom, Collapse, Slider, Grow } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter } from "react-router-dom";
 
 import theme from "./theme";
 import NavTabs from "./components/NavTabs";
@@ -10,25 +10,45 @@ import Upcoming from "./components/Upcoming";
 import History from "./components/History";
 import FixedBkg from "./components/FixedBkg";
 import usePlanets from "./hooks/usePlanets";
+import { TransitionGroup  } from "react-transition-group"
 
 export default function App(): JSX.Element {
   const planets = usePlanets();
+  const [navState, setNavState] = React.useState(0);
+
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <NavTabs />
-        <Switch>
+        <NavTabs {...{ navState, setNavState }} />
           <Route path={["/", "/launch"]} exact>
-            <Launch planets={planets}/>
+            {({ match }) => {
+              return (
+                <Grow in={match !== null} mountOnEnter unmountOnExit>
+                  <Launch planets={planets} />
+                </Grow>
+              );
+            }}
           </Route>
-          <Route path="/upcoming" exact>
-            <Upcoming />
+          <Route path={"/upcoming"} exact>
+            {({ match }) => {
+              return (
+                <Grow in={match !== null} mountOnEnter unmountOnExit>
+                  <Upcoming  />
+                </Grow>
+              );
+            }}
           </Route>
-          <Route path="/history" exact>
-            <History />
+          <Route path={"/history"} exact>
+            {({ match }) => {
+              return (
+                <Grow in={match !== null} mountOnEnter unmountOnExit>
+                  <History  />
+                </Grow>
+              );
+            }}
           </Route>
-        </Switch>
+
         <FixedBkg />
       </ThemeProvider>
     </BrowserRouter>

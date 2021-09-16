@@ -10,7 +10,7 @@ import Upcoming from "./components/Upcoming";
 import History from "./components/History";
 import FixedBkg from "./components/FixedBkg";
 import usePlanets from "./hooks/usePlanets";
-import { TransitionGroup  } from "react-transition-group"
+import { TransitionGroup } from "react-transition-group";
 
 export default function App(): JSX.Element {
   const planets = usePlanets();
@@ -21,34 +21,19 @@ export default function App(): JSX.Element {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <NavTabs {...{ navState, setNavState }} />
-          <Route path={["/", "/launch"]} exact>
-            {({ match }) => {
-              return (
-                <Grow in={match !== null} mountOnEnter unmountOnExit>
-                  <Launch planets={planets} />
-                </Grow>
-              );
-            }}
-          </Route>
-          <Route path={"/upcoming"} exact>
-            {({ match }) => {
-              return (
-                <Grow in={match !== null} mountOnEnter unmountOnExit>
-                  <Upcoming  />
-                </Grow>
-              );
-            }}
-          </Route>
-          <Route path={"/history"} exact>
-            {({ match }) => {
-              return (
-                <Grow in={match !== null} mountOnEnter unmountOnExit>
-                  <History  />
-                </Grow>
-              );
-            }}
-          </Route>
 
+        <Route path={["/", "/launch"]} exact>
+          <Launch planets={planets} />
+        </Route>
+
+        <Route path={"/upcoming"} exact>
+          <Upcoming />
+        </Route>
+
+        <Route path={"/history"} exact>
+          <History />
+        </Route>
+        
         <FixedBkg />
       </ThemeProvider>
     </BrowserRouter>

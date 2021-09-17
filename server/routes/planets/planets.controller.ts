@@ -1,9 +1,7 @@
 import { planets } from '../../models/planets.model';
 
-function getAllPlanets(req :any, res:any) {
-  console.log('getAllPlanets called');
-  
+export function getAllPlanets(req :any, res:any) {
   return res.status(200).json(planets);
 }
 
-export default getAllPlanets;
+

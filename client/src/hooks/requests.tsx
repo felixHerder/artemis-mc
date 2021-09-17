@@ -1,5 +1,5 @@
 import { PlanetData } from "./usePlanets";
-
+import { LaunchData } from "./useLaunches";
 const API_URL = process.env.API_URL
 
 async function httpGetPlanets(): Promise<PlanetData[]> {
@@ -8,9 +8,10 @@ async function httpGetPlanets(): Promise<PlanetData[]> {
   // Load planets and return as JSON.
 }
 
-async function httpGetLaunches(): Promise<void> {
+async function httpGetLaunches(): Promise<LaunchData[] | []> {
   // TODO: Once API is ready.
   // Load launches, sort by flight number, and return as JSON.
+  return [];
 }
 // eslint-disable-next-line
 async function httpSubmitLaunch(launch: LaunchData): Promise<void> {
@@ -22,11 +23,6 @@ async function httpAbortLaunch(id: number): Promise<void> {
   // TODO: Once API is ready.
   // Delete launch with given ID.
 }
-type LaunchData = {
-  launchDate: Date;
-  mission: string;
-  rocket: string;
-  target: string;
-};
+
 
 export { httpGetPlanets, httpGetLaunches, httpSubmitLaunch, httpAbortLaunch };

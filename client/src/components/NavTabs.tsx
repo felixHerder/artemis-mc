@@ -19,7 +19,7 @@ import {
 } from "@material-ui/core";
 import { Menu, ChevronRight, DoubleArrow, Schedule, History, } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import planet from "../Assets/jupiter_32.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
         padding: "0 12px"
       },
       [theme.breakpoints.down('xs')]:{
-        padding: "0"
+        padding: "0 6px"
       }
     
   }
@@ -62,7 +62,6 @@ type NavTabProps = {
   setNavState: React.Dispatch<SetStateAction<number>>
 }
 export default function NavTabs({navState,setNavState}: NavTabProps): JSX.Element {
-
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   return (

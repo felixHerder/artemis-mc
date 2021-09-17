@@ -1,8 +1,9 @@
 import React from "react";
 import { Container, Paper, Typography, Box, Divider, InputLabel, FormControl, TextField, Button, Select, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import {PlanetData} from '../hooks/usePlanets'
-import { TransitionProps } from "@material-ui/core/transitions/transition";
+
+import {PlanetData} from '../hooks/usePlanets';
+import { LaunchData } from "../hooks/useLaunches";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,14 +23,19 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "4em"
   }
 }));
-type LaunchProps = TransitionProps & {
-  planets: PlanetData[]
+type LaunchProps =  {
+  planets: PlanetData[];
+  submitLaunch: (e:React.SyntheticEvent)=> void;
+  isPendingLaunch: boolean;
+  launchData: LaunchData;
+  setLaunchData: React.Dispatch<React.SetStateAction<LaunchData>>;
 }
-export default function Launch({planets,...props}: LaunchProps): JSX.Element {
+export default function Launch({planets,submitLaunch,launchData,setLaunchData}: LaunchProps): JSX.Element {
   const classes = useStyles();
+  
   return (
     <Box position="absolute" width="100vw">
-      <Container {...props} maxWidth="md" className={classes.container}>
+      <Container  maxWidth="md" className={classes.container}>
         <Paper variant="outlined" elevation={1} square>
           <Box m={2} clone>
             <Typography variant="h4" component="h2" align="center">
@@ -40,8 +46,7 @@ export default function Launch({planets,...props}: LaunchProps): JSX.Element {
           <Box p={2}>
             <Typography variant="body1" color="textSecondary" gutterBottom>
               Schedule a mission launch for interstellar travel to one of the Kepler Exoplanets.
-            </Typography>
-            <Typography variant="body1" color="textSecondary" gutterBottom>
+              <br/>
               Only confirmed planets matching the following criteria are available for the earliest scheduled missions:
             </Typography>
             <Typography component="ul" color="textSecondary">
@@ -57,7 +62,7 @@ export default function Launch({planets,...props}: LaunchProps): JSX.Element {
             <Divider />
           </Box>
           <Box p={2}>
-            <form noValidate autoComplete="off">
+            <form  autoComplete="off" onSubmit={submitLaunch}>
               <Grid container justifyContent="space-between">
                 <Grid item  sm={9} md={8} direction="row" container spacing={2}>
                   <Grid item xs={12}>
@@ -68,19 +73,22 @@ export default function Launch({planets,...props}: LaunchProps): JSX.Element {
                       label="Launch Date"
                       type="date"
                       variant="outlined"
-                      defaultValue="2023-04-29"
+                      defaultValue="2031-02-15"
+                      InputLabelProps={{shrink:true}}
+                      name="launchDate"
+                      required
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField fullWidth id="misionName" label="Mission Name" variant="outlined" />
+                    <TextField fullWidth id="misionName" label="Mission Name" variant="outlined" name="missionName" required/>
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField fullWidth id="rocketType" label="Rocket Type" variant="outlined" />
+                    <TextField fullWidth id="rocketType" label="Rocket Type" variant="outlined" name="rocketType" required/>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl fullWidth variant="outlined">
                       <InputLabel htmlFor="destination">Destination Exoplanet</InputLabel>
-                      <Select id="destination" native label="Destination Exoplanet">
+                      <Select id="destination" native label="Destination Exoplanet" name="destination" required >
                         <option aria-label="None" value="" />
                         {planets.map((p,i)=>(
                           <option key={i} value={p.kepler_name}>{p.kepler_name}</option>
@@ -91,7 +99,7 @@ export default function Launch({planets,...props}: LaunchProps): JSX.Element {
                 </Grid>
                 <Grid item xs sm={3} md={4}>
                   <Box height="100%" display="flex" alignItems="flex-end" pt={2}>
-                    <Button className={classes.launch} size="large" color="secondary" variant="contained">
+                    <Button className={classes.launch} type="submit" size="large" color="secondary" variant="contained">
                       Launch Mission
                     </Button>
                   </Box>

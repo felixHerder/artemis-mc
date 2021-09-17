@@ -1,6 +1,7 @@
 import express  from 'express';
 const cors = require('cors');
 import path from 'path';
+import expressStaticGzip from 'express-static-gzip';
 
 import planetsRouter from'../routes/planets/planets.router';
 
@@ -11,11 +12,10 @@ app.use(cors({
 app.use(express.json());
 
 const pathToClient = path.join(__dirname, '..', '..', 'client','dist')
-app.use(express.static(pathToClient));
-
+app.use('/',expressStaticGzip(pathToClient,{}));
 app.use(planetsRouter);
 
-app.get('/*', (req , res) => {
+app.get('/*',(req,res)=>{
   res.sendFile(path.join(pathToClient,'index.html'));
 })
 

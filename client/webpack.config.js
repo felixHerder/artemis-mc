@@ -5,12 +5,13 @@ const CssMinimizer = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionPlugin = require("compression-webpack-plugin");
 const Dotenv = require('dotenv-webpack');
 
 const config = {
   entry: path.join(__dirname, "src", "index.tsx"),
   mode: envMode,
-  devtool:"eval-source-map",
+  devtool: envMode==="production" ? false: "eval-cheap-source-map",
   module: {
     rules: [
       {
@@ -95,10 +96,15 @@ const config = {
     new Dotenv({
       path:"./.env"
     }),
-
-    // new BundleAnalyzerPlugin({
-    //   analyzerMode: envMode === 'production'? "server" : "disabled"
-    // })
+    envMode === 'development' ? ()=>{} : new BundleAnalyzerPlugin({
+      analyzerMode: envMode === 'production'? "static" : "disabled"
+    }),
+    envMode === 'development' ? ()=>{} : new CompressionPlugin({
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    })
   ],
 };
 

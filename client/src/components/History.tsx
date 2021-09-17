@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Paper, Typography, Box, Divider, Table, TableHead, TableBody, TableRow, TableCell, TableContainer } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { TransitionProps } from "@material-ui/core/transitions/transition";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -33,11 +32,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function History(props: TransitionProps): JSX.Element {
+export default function History(): JSX.Element {
   const classes = useStyles();
   return (
     <Box position="absolute" width="100vw">
-      <Container {...props} maxWidth="md" className={classes.container}>
+      <Container maxWidth="md" className={classes.container}>
         <Paper variant="outlined" elevation={1} square>
           <Box m={2} clone>
             <Typography variant="h4" component="h2" align="center">

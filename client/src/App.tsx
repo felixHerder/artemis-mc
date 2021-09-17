@@ -1,6 +1,6 @@
 import React from "react";
-import { CssBaseline, Fade, Slide, Zoom, Collapse, Slider, Grow } from "@material-ui/core";
-import { ThemeProvider,styled } from "@material-ui/core/styles";
+import { CssBaseline, Grow } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core/styles";
 import { Route, Switch, useLocation,  } from "react-router-dom";
 
 import theme from "./theme";
@@ -12,11 +12,26 @@ import FixedBkg from "./components/FixedBkg";
 import usePlanets from "./hooks/usePlanets";
 import { TransitionGroup } from "react-transition-group";
 import { TransitionProps } from "@material-ui/core/transitions/transition";
+import useLaunches,{LaunchData} from './hooks/useLaunches';
 
 export default function App(): JSX.Element {
   const planets = usePlanets();
-  const [navState, setNavState] = React.useState(0);
   const location = useLocation();
+  const {submitLaunch,isPendingLaunch} = useLaunches();
+  const [navState, setNavState] = React.useState(0);
+  const [launchData,setLaunchData] = React.useState<LaunchData>({
+    launchDate: new Date(Date.now()),
+    mission: '',
+    rocket: '',
+    target: ''
+  });
+
+  React.useEffect(()=>{
+    if(location.pathname ==='/launch') setNavState(0);
+    if(location.pathname ==='/upcoming') setNavState(1);
+    if(location.pathname ==='/history') setNavState(2);
+    // eslint-disable-next-line
+  },[])
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -26,7 +41,7 @@ export default function App(): JSX.Element {
           <TransitionPropsWrapper>
             <Switch location={location}>
               <Route path={["/", "/launch"]} exact>
-                <Launch planets={planets} />
+                <Launch {...{planets,submitLaunch,isPendingLaunch,launchData,setLaunchData}} />
               </Route>
               <Route path={"/upcoming"} exact>
                 <Upcoming />

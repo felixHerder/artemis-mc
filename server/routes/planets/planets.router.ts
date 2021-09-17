@@ -1,5 +1,5 @@
 import express = require('express');
-import  getAllPlanets from './planets.controller';
+import  {getAllPlanets} from './planets.controller';
 
 const planetsRouter = express.Router();
 

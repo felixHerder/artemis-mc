@@ -35,6 +35,26 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerList:{
     width:theme.spacing(24),
+  },
+  tabs:{
+    [theme.breakpoints.down('sm')]:{
+      '& .MuiButtonBase-root,':{
+        fontSize: "0.65rem"
+      },
+      '& .MuiTab-root':{
+        minWidth:"100px"
+      }
+    }
+  },
+  toolbar:{
+
+      [theme.breakpoints.down('sm')]:{
+        padding: "0 12px"
+      },
+      [theme.breakpoints.down('xs')]:{
+        padding: "0"
+      }
+    
   }
 }));
 type NavTabProps = {
@@ -49,9 +69,9 @@ export default function NavTabs({navState,setNavState}: NavTabProps): JSX.Elemen
     <>
       <AppBar position="relative" className={classes.root}>
         <Container maxWidth="lg">
-          <Toolbar>
+          <Toolbar className={classes.toolbar}>
             <Grid container justifyContent="center">
-              <Grid item container xs={10} md={4} alignItems="center">
+              <Grid item container xs={10} sm={6} md={4} alignItems="center">
                 <img src={planet} width="24px" alt="planet logo" />
                 <Box ml={1} clone>
                   <Typography className={classes.branding} variant="h5" component="h1">
@@ -59,16 +79,16 @@ export default function NavTabs({navState,setNavState}: NavTabProps): JSX.Elemen
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item container xs={2} md={8} alignItems="flex-end" justifyContent="flex-end">
+              <Grid item container xs={2} sm={6} md={8} alignItems="flex-end" justifyContent="flex-end">
                 <Box display="inline-block">
-                  <Hidden smDown>
-                    <Tabs value={navState} variant="standard" indicatorColor="secondary" onChange={(e, nv) => setNavState(nv)}>
+                  <Hidden  xsDown>
+                    <Tabs  className={classes.tabs} value={navState} variant="standard"  indicatorColor="secondary" onChange={(e, nv) => setNavState(nv)}>
                       <Tab icon={<DoubleArrow />} component={RouterLink} label="Launch" to="/launch" />
                       <Tab icon={<Schedule />} component={RouterLink} label="Upcoming" to="/upcoming" />
                       <Tab icon={<History />} component={RouterLink} label="History" to="/history" />
                     </Tabs>
                   </Hidden>
-                  <Hidden mdUp>
+                  <Hidden smUp>
                     <IconButton onClick={() => setOpen(true)}>
                       <Menu />
                     </IconButton>

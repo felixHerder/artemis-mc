@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Upcoming({...props}:TransitionProps): JSX.Element {
   const classes = useStyles();
   return (
+    <Box position="absolute" width="100vw">
     <Container {...props} maxWidth="md" className={classes.container}>
       <Paper variant="outlined" elevation={1} square>
         <Box m={2} clone>
@@ -103,5 +104,6 @@ export default function Upcoming({...props}:TransitionProps): JSX.Element {
         </Box>
       </Paper>
     </Container>
+  </Box>
   );
 }

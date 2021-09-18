@@ -1,5 +1,18 @@
 module.exports = {
-  presets: ["@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"],
+  presets: [
+    [
+      "@babel/preset-env",
+      {
+        // useBuiltIns: "usage",
+        // corejs: "3"
+        // targets:{
+          
+        // }
+      },
+    ],
+    "@babel/preset-react",
+    "@babel/preset-typescript",
+  ],
   plugins: [
     [
       "@babel/plugin-transform-runtime",
@@ -16,6 +29,14 @@ module.exports = {
         },
         "@material-ui/icons": {
           transform: "@material-ui/icons/esm/${member}",
+          preventFullImport: true,
+        },
+        "@material-ui/styles": {
+          transform: "@material-ui/styles/esm/${member}",
+          preventFullImport: true,
+        },
+          "@material-ui/system": {
+          transform: "@material-ui/system/esm/${member}",
           preventFullImport: true,
         },
       },

@@ -1,7 +1,7 @@
 import http from 'http';
 import appToServe from  './app';
 
-import { loadPlanetsData } from '../models/planets.model';
+import { loadPlanetsData } from './models/planets.model';
 
 
 const PORT = process.env.PORT || 8000;

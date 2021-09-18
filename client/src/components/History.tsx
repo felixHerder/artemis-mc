@@ -30,9 +30,15 @@ const useStyles = makeStyles((theme) => ({
   closeCol: {
     width: theme.spacing(4),
   },
+  success:{
+    background: theme.palette.success.dark
+  },
+  failed:{
+    background: theme.palette.error.dark
+  }
 }));
 
-export default function History(): JSX.Element {
+export default function History({launches}:{launches?:LaunchData[]}): JSX.Element {
   const classes = useStyles();
   return (
     <Box position="absolute" width="100vw">
@@ -59,30 +65,22 @@ export default function History(): JSX.Element {
                     <TableCell>Mission</TableCell>
                     <TableCell>Rocket</TableCell>
                     <TableCell>Destination</TableCell>
+                    <TableCell>Customers</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody className={classes.tableBody}>
-                  <TableRow>
-                    <TableCell>1</TableCell>
-                    <TableCell>2332-04-92</TableCell>
-                    <TableCell>Mission</TableCell>
-                    <TableCell>Rocket</TableCell>
-                    <TableCell>Destination</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>2</TableCell>
-                    <TableCell>2332-04-92</TableCell>
-                    <TableCell>Mission</TableCell>
-                    <TableCell>Rocket</TableCell>
-                    <TableCell>Destination</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>3</TableCell>
-                    <TableCell>2332-04-92</TableCell>
-                    <TableCell>Mission</TableCell>
-                    <TableCell>Rocket</TableCell>
-                    <TableCell>Destination</TableCell>
-                  </TableRow>
+                {launches && launches.length ? 
+                launches.filter(l=>!l.upcoming).map((ln,ix)=>(
+                <TableRow key={ix} >
+                  <TableCell className={ln.success ? classes.success : classes.failed}>{ln.flightNumber}</TableCell>
+                  <TableCell>{ln.launchDate.toISOString().split('T')[0]}</TableCell>
+                  <TableCell>{ln.mission}</TableCell>
+                  <TableCell>{ln.rocket}</TableCell>
+                  <TableCell>{ln.destination}</TableCell>
+                  <TableCell>{ln.customers?.join(", ")}</TableCell>
+                </TableRow>
+                )):
+                null}
                 </TableBody>
               </Table>
             </TableContainer>

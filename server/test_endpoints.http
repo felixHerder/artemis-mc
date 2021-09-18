@@ -1,0 +1,8 @@
+POST http://localhost:8000/launches
+Content-Type: "application/json",
+{
+  "mission":"PLUTO254",
+  "rocket":"Dranon Heavy IS4",
+  "destination":"Pluto",
+  "launchDate":"2032-09-08"
+}

@@ -2,13 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { httpGetLaunches, httpSubmitLaunch, httpAbortLaunch } from "./requests";
 
-export type LaunchData = {
-  launchDate: Date;
-  mission: string;
-  rocket: string;
-  target: string;
-};
-
 function useLaunches()
 : {
   launches: LaunchData[];
@@ -22,8 +15,13 @@ function useLaunches()
   const [isPendingLaunch, setPendingLaunch] = useState(false);
 
   const getLaunches = useCallback(async () => {
-    const fetchedLaunches: LaunchData[] = await httpGetLaunches();
-    saveLaunches(fetchedLaunches);
+    try{
+      const fetchedLaunches = await httpGetLaunches();
+      saveLaunches(fetchedLaunches);
+    }
+    catch(error){
+      console.log('Error fetching launches:',error)
+    }
   }, []);
 
   useEffect(() => {
@@ -40,12 +38,12 @@ function useLaunches()
       const launchDate = new Date(data.get("launchDate") as string);
       const mission = data.get("missionBame") as string;
       const rocket = data.get("rocketType") as string;
-      const target = data.get("destination") as string;
+      const destination = data.get("destination") as string;
       const response = await httpSubmitLaunch({
         launchDate,
         mission,
         rocket,
-        target,
+        destination,
       });
 
       // TODO: Set success based on response.

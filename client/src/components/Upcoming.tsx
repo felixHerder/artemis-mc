@@ -1,8 +1,6 @@
 import React from "react";
 import { Container, Paper, Typography, Box, Divider, Table, TableHead, TableBody, TableRow, TableCell, TableContainer, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { TransitionProps } from "@material-ui/core/transitions/transition";
-
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,11 +32,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Upcoming({...props}:TransitionProps): JSX.Element {
+export default function Upcoming({launches}:{launches?:LaunchData[]}): JSX.Element {
   const classes = useStyles();
+  
   return (
     <Box position="absolute" width="100vw">
-    <Container {...props} maxWidth="md" className={classes.container}>
+    <Container  maxWidth="md" className={classes.container}>
       <Paper variant="outlined" elevation={1} square>
         <Box m={2} clone>
           <Typography variant="h4" component="h2" align="center">
@@ -68,36 +67,20 @@ export default function Upcoming({...props}:TransitionProps): JSX.Element {
                 </TableRow>
               </TableHead>
               <TableBody className={classes.tableBody}>
-                <TableRow>
-                  <TableCell>1</TableCell>
-                  <TableCell>2332-04-92</TableCell>
-                  <TableCell>Mission</TableCell>
-                  <TableCell>Rocket</TableCell>
-                  <TableCell>Destination</TableCell>
+                {launches && launches.length ? 
+                launches.filter(l=>l.upcoming).map((ln,ix)=>(
+                <TableRow key={ix}>
+                  <TableCell>{ln.flightNumber}</TableCell>
+                  <TableCell>{ln.launchDate.toISOString().split('T')[0]}</TableCell>
+                  <TableCell>{ln.mission}</TableCell>
+                  <TableCell>{ln.rocket}</TableCell>
+                  <TableCell>{ln.destination}</TableCell>
                   <TableCell>
                     <Button size="small">✖</Button>
                   </TableCell>
                 </TableRow>
-                <TableRow>
-                  <TableCell>2</TableCell>
-                  <TableCell>2332-04-92</TableCell>
-                  <TableCell>Mission</TableCell>
-                  <TableCell>Rocket</TableCell>
-                  <TableCell>Destination</TableCell>
-                  <TableCell>
-                    <Button size="small">✖</Button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>3</TableCell>
-                  <TableCell>2332-04-92</TableCell>
-                  <TableCell>Mission</TableCell>
-                  <TableCell>Rocket</TableCell>
-                  <TableCell>Destination</TableCell>
-                  <TableCell>
-                    <Button  size="small">✖</Button>
-                  </TableCell>
-                </TableRow>
+                )):
+                null}
               </TableBody>
             </Table>
           </TableContainer>

@@ -12,19 +12,13 @@ import FixedBkg from "./components/FixedBkg";
 import usePlanets from "./hooks/usePlanets";
 import { TransitionGroup } from "react-transition-group";
 import { TransitionProps } from "@material-ui/core/transitions/transition";
-import useLaunches,{LaunchData} from './hooks/useLaunches';
+import useLaunches from './hooks/useLaunches';
 
-export default function App(): JSX.Element {
+export default function App(): JSX.Element { 
   const planets = usePlanets();
   const location = useLocation();
-  const {submitLaunch,isPendingLaunch} = useLaunches();
+  const {submitLaunch,isPendingLaunch,launches} = useLaunches();
   const [navState, setNavState] = React.useState(0);
-  const [launchData,setLaunchData] = React.useState<LaunchData>({
-    launchDate: new Date(Date.now()),
-    mission: '',
-    rocket: '',
-    target: ''
-  });
 
   React.useEffect(()=>{
     if(location.pathname ==='/launch') setNavState(0);
@@ -41,13 +35,13 @@ export default function App(): JSX.Element {
           <TransitionPropsWrapper>
             <Switch location={location}>
               <Route path={["/", "/launch"]} exact>
-                <Launch {...{planets,submitLaunch,isPendingLaunch,launchData,setLaunchData}} />
+                <Launch {...{planets,submitLaunch,isPendingLaunch}} />
               </Route>
               <Route path={"/upcoming"} exact>
-                <Upcoming />
+                <Upcoming {...{launches}}/>
               </Route>
               <Route path={"/history"} exact>
-                <History />
+                <History  {...{launches}}/>
               </Route>
             </Switch>
           </TransitionPropsWrapper>

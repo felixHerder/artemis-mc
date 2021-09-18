@@ -2,8 +2,6 @@ import React from "react";
 import { Container, Paper, Typography, Box, Divider, InputLabel, FormControl, TextField, Button, Select, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import {PlanetData} from '../hooks/usePlanets';
-import { LaunchData } from "../hooks/useLaunches";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,8 +25,8 @@ type LaunchProps =  {
   planets: PlanetData[];
   submitLaunch: (e:React.SyntheticEvent)=> void;
   isPendingLaunch: boolean;
-  launchData: LaunchData;
-  setLaunchData: React.Dispatch<React.SetStateAction<LaunchData>>;
+  launchData?: LaunchData;
+  setLaunchData?: React.Dispatch<React.SetStateAction<LaunchData>>;
 }
 export default function Launch({planets,submitLaunch,launchData,setLaunchData}: LaunchProps): JSX.Element {
   const classes = useStyles();

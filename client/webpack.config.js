@@ -4,32 +4,25 @@ const HtmlWebpPlugin = require("html-webpack-plugin");
 const CssMinimizer = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CompressionPlugin = require("compression-webpack-plugin");
-const Dotenv = require('dotenv-webpack');
+const Dotenv = require("dotenv-webpack");
 
 const config = {
   entry: path.join(__dirname, "src", "index.tsx"),
   mode: envMode,
-  devtool: envMode==="production" ? false: "eval-cheap-source-map",
+  devtool: envMode === "production" ? false : "eval-source-map",
   module: {
     rules: [
       {
         test: /\.tsx$/,
-        include: path.resolve(__dirname,'src'),
+        include: path.resolve(__dirname, "src"),
         exclude: /node_modules/,
-        use: [
-          "babel-loader",
-          "eslint-loader"
-        ],
+        use: ["babel-loader", "eslint-loader"],
       },
       {
         test: /\.s?css$/,
-        use: [
-          envMode === "development" ? "style-loader" : MiniCssExtractPlugin.loader,
-          "css-loader",
-          "sass-loader",
-        ],
+        use: [envMode === "development" ? "style-loader" : MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
       {
         test: /.svg$/,
@@ -46,8 +39,8 @@ const config = {
       {
         //process images in html template
         test: /\.html$/,
-        loader: "html-loader"
-      }
+        loader: "html-loader",
+      },
     ],
   },
   optimization: {
@@ -67,7 +60,10 @@ const config = {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: process.env.BUILD_PATH 
+    ? path.resolve(__dirname, process.env.BUILD_PATH)
+    : path.resolve(__dirname, "dist"),
+
     filename: "js/[name].js",
     assetModuleFilename: "assets/[name][ext]",
     clean: true,
@@ -82,8 +78,8 @@ const config = {
       overlay: {
         errors: true,
         warnings: false,
-      }
-    }
+      },
+    },
   },
   plugins: [
     new HtmlWebpPlugin({
@@ -94,17 +90,21 @@ const config = {
       filename: "css/[name].css",
     }),
     new Dotenv({
-      path:"./.env"
+      path: "./.env",
     }),
-    envMode === 'development' ? ()=>{} : new BundleAnalyzerPlugin({
-      analyzerMode: envMode === 'production'? "static" : "disabled"
-    }),
-    envMode === 'development' ? ()=>{} : new CompressionPlugin({
-      algorithm: "gzip",
-      test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
-      minRatio: 0.8,
-    })
+    envMode === "development"
+      ? () => {}
+      : new BundleAnalyzerPlugin({
+          analyzerMode: envMode === "production" ? "static" : "disabled",
+        }),
+    envMode === "development"
+      ? () => {}
+      : new CompressionPlugin({
+          algorithm: "gzip",
+          test: /\.js$|\.css$|\.html$/,
+          threshold: 10240,
+          minRatio: 0.8,
+        }),
   ],
 };
 

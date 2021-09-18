@@ -4,4 +4,8 @@ cache/
 */cache
 dist/
 */dist/
+public/
+*/public/
+/coverage
+*/coverage
 

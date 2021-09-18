@@ -2,18 +2,21 @@ import { useCallback, useEffect, useState } from "react";
 
 import { httpGetPlanets } from "./requests";
 
-export type PlanetData = {
-  [k:string]: string;
-}
 function usePlanets() : PlanetData[] {
   const [planets, savePlanets] = useState<PlanetData[]>([]);
-
+  
   const getPlanets = useCallback(async () => {
-    const fetchedPlanets = await httpGetPlanets();
-    savePlanets(fetchedPlanets as PlanetData[]);
+    try{
+      const fetchedPlanets = await httpGetPlanets();
+      savePlanets(fetchedPlanets as PlanetData[]);
+    }
+    catch(error){
+      console.log("error Fetching planets",error);
+    }
   }, []);
 
   useEffect(() => {
+    
     getPlanets();
   }, [getPlanets]);
 

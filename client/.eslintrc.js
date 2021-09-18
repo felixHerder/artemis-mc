@@ -32,7 +32,6 @@ module.exports = {
         node: true
     },
     rules:{
-        "no-undef": "error",
         "@typescript-eslint/no-unused-vars":"off"
         
     },
@@ -44,5 +43,6 @@ module.exports = {
     ignorePatterns: ["webpack.config.js",".eslintrc.js","dist","node_modules","*.js"],
     globals: {
         JSX: true,
+        
     },
 }

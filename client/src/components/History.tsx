@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 export default function History({launches}:{launches?:LaunchData[]}): JSX.Element {
   const classes = useStyles();
   return (
-    <Box position="absolute" width="100vw">
+    <Box position="absolute" width="100%">
       <Container maxWidth="md" className={classes.container}>
         <Paper variant="outlined" elevation={1} square>
           <Box m={2} clone>

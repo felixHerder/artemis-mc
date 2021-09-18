@@ -16,8 +16,8 @@ app.use(express.json());
 
 const pathToClient = path.join(__dirname, '..', 'public')
 app.use('/',expressStaticGzip(pathToClient,{}));
-app.use(planetsRouter);
-app.use(launchesRouter);
+app.use('/planets',planetsRouter);
+app.use('/launches',launchesRouter);
 
 app.get('/*',(req,res)=>{
   res.sendFile(path.join(pathToClient,'index.html'));

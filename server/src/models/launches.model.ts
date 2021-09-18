@@ -21,10 +21,15 @@ function addNewLaunch(launch: LaunchData) {
     Object.assign(launch, {
       succes: true,
       upcoming: true,
-      customers: ["ESA, ISA, NASA"],
+      customers: ["ESA, ISA"],
       flightNumber: latestFlightNumber,
     })
   );
 }
-
-export { launches, addNewLaunch };
+function getAllLaunches(){
+  return Array.from(launches.values())
+}
+function abortLaunch(id:number){
+  return launches.delete(id);
+}
+export { getAllLaunches, addNewLaunch,abortLaunch };

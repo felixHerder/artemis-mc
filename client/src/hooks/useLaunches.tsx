@@ -31,12 +31,11 @@ function useLaunches()
   const submitLaunch = useCallback(
     async (e: React.SyntheticEvent) => {
       e.preventDefault();
-      // setPendingLaunch(true);
+      setPendingLaunch(true);
       const eventTarget = e.target as HTMLFormElement;
       const data = new FormData(eventTarget);
-      console.log('Launch Submited with:',...data)
       const launchDate = new Date(data.get("launchDate") as string);
-      const mission = data.get("missionBame") as string;
+      const mission = data.get("missionName") as string;
       const rocket = data.get("rocketType") as string;
       const destination = data.get("destination") as string;
       const response = await httpSubmitLaunch({
@@ -46,13 +45,16 @@ function useLaunches()
         destination,
       });
 
-      // TODO: Set success based on response.
-      const success = false;
+      const success = response.ok;
       if (success) {
         getLaunches();
         setTimeout(() => {
+           //TO DO implement pop-up with succes message
           setPendingLaunch(false);
-        }, 800);
+        }, 300);
+      }
+      else {
+        //TO DO implement pop-up with failure message
       }
     },
     [getLaunches]
@@ -60,12 +62,17 @@ function useLaunches()
 
   const abortLaunch = useCallback(
     async (id: number) => {
+      setPendingLaunch(true);
       const response = await httpAbortLaunch(id);
-
-      // TODO: Set success based on response.
-      const success = false;
+      const success = response.ok;
       if (success) {
-        getLaunches();
+        await getLaunches();
+        setPendingLaunch(false);
+        return;
+      }else{
+         //TO DO implement pop-up with failure message
+         setPendingLaunch(false);
+         return;
       }
     },
     [getLaunches]

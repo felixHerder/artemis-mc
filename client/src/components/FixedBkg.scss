@@ -4,14 +4,16 @@ $primaryDark: hsl(201, 30%, 10%);
 $secondaryDark: hsl(33, 30%, 10%);
 
 .fluidImage{
+  box-sizing: content-box;
   position:fixed;
-  top:0;
+  top:0; 
+  
   background-image: 
   linear-gradient(to bottom right,rgba($primaryDark,.8), rgba($secondaryDark,1)),
   url('../Assets/space_shuttle.jpg');
   background-size:cover;
   background-position:center;
-  width: 100vw;
+  width: 100%;
   height:100vh;
   z-index: -1;
 }

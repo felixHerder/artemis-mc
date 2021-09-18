@@ -9,6 +9,14 @@ declare  type LaunchData = {
     success: boolean
   };
 
+  declare  type FormLaunchData = {
+    launchDate: Date;
+    mission: string;
+    rocket: string;
+    destination: string,
+  };
+
+
 declare type PlanetData = {
     [k:string]: string;
   }

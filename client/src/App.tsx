@@ -17,7 +17,7 @@ import useLaunches from './hooks/useLaunches';
 export default function App(): JSX.Element { 
   const planets = usePlanets();
   const location = useLocation();
-  const {submitLaunch,isPendingLaunch,launches} = useLaunches();
+  const {launches,submitLaunch,isPendingLaunch,abortLaunch} = useLaunches();
   const [navState, setNavState] = React.useState(0);
 
   React.useEffect(()=>{
@@ -38,7 +38,7 @@ export default function App(): JSX.Element {
                 <Launch {...{planets,submitLaunch,isPendingLaunch}} />
               </Route>
               <Route path={"/upcoming"} exact>
-                <Upcoming {...{launches}}/>
+                <Upcoming {...{launches,abortLaunch,isPendingLaunch}}/>
               </Route>
               <Route path={"/history"} exact>
                 <History  {...{launches}}/>

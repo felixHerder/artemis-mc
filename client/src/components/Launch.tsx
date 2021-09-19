@@ -1,5 +1,18 @@
 import React from "react";
-import { Container, Paper, Typography, Box, Divider, InputLabel, FormControl, TextField, Button, Select, Grid, CircularProgress } from "@material-ui/core";
+import {
+  Container,
+  Paper,
+  Typography,
+  Box,
+  Divider,
+  InputLabel,
+  FormControl,
+  TextField,
+  Button,
+  Select,
+  Grid,
+  CircularProgress,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +50,6 @@ type LaunchProps = {
 };
 export default function Launch({ planets, submitLaunch, isPendingLaunch }: LaunchProps): JSX.Element {
   const classes = useStyles();
-
   return (
     <Box position="absolute" width="100%">
       <Container maxWidth="md" className={classes.container}>
@@ -106,14 +118,7 @@ export default function Launch({ planets, submitLaunch, isPendingLaunch }: Launc
                 </Grid>
                 <Grid item xs sm={3} md={4}>
                   <Box height="100%" display="flex" alignItems="flex-end" pt={2}>
-                    <Button
-                      className={classes.launch}
-                      type="submit"
-                      size="large"
-                      color="secondary"
-                      variant="contained"
-                      disabled={isPendingLaunch}
-                    >
+                    <Button className={classes.launch} type="submit" size="large" color="secondary" variant="contained" disabled={isPendingLaunch}>
                       Launch Mission
                       {isPendingLaunch ? (
                         <Box className={classes.loader}>
@@ -121,6 +126,7 @@ export default function Launch({ planets, submitLaunch, isPendingLaunch }: Launc
                         </Box>
                       ) : null}
                     </Button>
+                    
                   </Box>
                 </Grid>
               </Grid>

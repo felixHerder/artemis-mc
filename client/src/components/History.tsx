@@ -31,10 +31,10 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(4),
   },
   success:{
-    background: theme.palette.success.dark
+    color: theme.palette.success.main
   },
   failed:{
-    background: theme.palette.error.dark
+    color: theme.palette.error.main
   }
 }));
 

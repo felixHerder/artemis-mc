@@ -2,25 +2,28 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { httpGetLaunches, httpSubmitLaunch, httpAbortLaunch } from "./requests";
 
-function useLaunches()
-: {
+function useLaunches(): {
   launches: LaunchData[];
   isPendingLaunch: boolean;
+  submitResponse: {
+    message: string;
+    ok: boolean;
+  };
+
   submitLaunch: (e: React.SyntheticEvent) => Promise<void>;
   abortLaunch: (e: number) => Promise<void>;
-}
- {
-   
+} {
   const [launches, saveLaunches] = useState<LaunchData[]>([]);
   const [isPendingLaunch, setPendingLaunch] = useState(false);
+  const [submitResponse, setSubmitResponse] = useState({ message: "", ok: false });
+  const timer = React.useRef<NodeJS.Timeout>();
 
   const getLaunches = useCallback(async () => {
-    try{
+    try {
       const fetchedLaunches = await httpGetLaunches();
       saveLaunches(fetchedLaunches);
-    }
-    catch(error){
-      console.log('Error fetching launches:',error)
+    } catch (error) {
+      console.log("Error fetching launches:", error);
     }
   }, []);
 
@@ -44,17 +47,21 @@ function useLaunches()
         rocket,
         destination,
       });
-
-      const success = response.ok;
-      if (success) {
-        getLaunches();
-        setTimeout(() => {
-           //TO DO implement pop-up with succes message
-          setPendingLaunch(false);
-        }, 300);
-      }
-      else {
-        //TO DO implement pop-up with failure message
+      if(timer.current)clearTimeout(timer.current);
+      if (response.ok) {
+        await getLaunches();
+        setPendingLaunch(false);
+        setSubmitResponse({ message: "Launch submited", ok: true });
+        timer.current = setTimeout(async () => {
+          setSubmitResponse({ message: "", ok: true });
+        }, 2000);
+      } else {
+        console.log("in ELSE BLOCK Response:", response.ok);
+        setPendingLaunch(false);
+        setSubmitResponse({ message: "Launch submit failed", ok: false });
+        timer.current = setTimeout(async () => {
+          setSubmitResponse({ message: "", ok: false });
+        }, 2000);
       }
     },
     [getLaunches]
@@ -64,15 +71,22 @@ function useLaunches()
     async (id: number) => {
       setPendingLaunch(true);
       const response = await httpAbortLaunch(id);
-      const success = response.ok;
-      if (success) {
+      if (timer.current) clearTimeout(timer.current);
+      if (response.ok) {
         await getLaunches();
         setPendingLaunch(false);
+        setSubmitResponse({ message: "Lauch aborted", ok: true });
+        timer.current = setTimeout(async () => {
+          setSubmitResponse({ message: "", ok: true });
+        }, 2000);
         return;
-      }else{
-         //TO DO implement pop-up with failure message
-         setPendingLaunch(false);
-         return;
+      } else {
+        setSubmitResponse({ message: "Launch abort failed", ok: false });
+        setPendingLaunch(false);
+        timer.current = setTimeout(async () => {
+          setSubmitResponse({ message: "", ok: false });
+        }, 2000);
+        return;
       }
     },
     [getLaunches]
@@ -83,6 +97,7 @@ function useLaunches()
     isPendingLaunch,
     submitLaunch,
     abortLaunch,
+    submitResponse,
   };
 }
 export default useLaunches;

@@ -1,4 +1,4 @@
-const launches = new Map();
+const launches: Map<number,LaunchData> = new Map();
 
 let latestFlightNumber = 100;
 const launch: LaunchData = {
@@ -30,6 +30,12 @@ function getAllLaunches(){
   return Array.from(launches.values())
 }
 function abortLaunch(id:number){
-  return launches.delete(id);
+  const aborted = launches.get(id);
+  if(!aborted){
+    return false;
+  }
+  aborted.upcoming = false;
+  aborted.success = false;
+  return aborted;
 }
 export { getAllLaunches, addNewLaunch,abortLaunch };

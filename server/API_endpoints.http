@@ -11,3 +11,6 @@ Content-Type: application/json
   "destination":"Pluto",
   "launchDate":"2032-09-08"
 }
+###
+DELETE http://localhost:8000/launches/100 HTTP/1.1
+###

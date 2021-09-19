@@ -26,13 +26,13 @@ export function httpAddNewLaunch(req: Request, res: Response) {
 }
 
 export function httpAbortLaunch(req: Request, res: Response) {
-  if (!req.params.id) {
-    return res.status(400).json("No id specified");
+  const launchId = Number(req.params.id);
+  if (!launchId) {
+    return res.status(400).json("No launchId specified");
   }
-  const id = req.params.id;
-  const result = abortLaunch(Number(id));
+  const result = abortLaunch(launchId);
   if (!result) {
-    return res.status(404).json("Launch not found for id: " + id);
+    return res.status(404).json("Launch not found for launchId: " + launchId);
   }
-  return res.status(201).json("Launch deleted with id: " + id);
+  return res.status(201).json(result);
 }

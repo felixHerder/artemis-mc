@@ -51,7 +51,7 @@ const config = {
         commons: {
           test: /[\\/]node_modules[\\/]/,
           name: "vendor",
-          chunks: "all",
+          chunks: "initial",
         },
       },
     },
@@ -64,7 +64,8 @@ const config = {
     ? path.resolve(__dirname, process.env.BUILD_PATH)
     : path.resolve(__dirname, "dist"),
 
-    filename: "js/[name].js",
+    filename: "js/[name].bundle.js",
+    chunkFilename:'js/[name].bundle.js',
     assetModuleFilename: "assets/[name][ext]",
     clean: true,
     // publicPath:'./'

@@ -108,8 +108,8 @@ export default function Launch({ planets, submitLaunch, isPendingLaunch }: Launc
                       <Select id="destination" native label="Destination Exoplanet" name="destination" required>
                         <option aria-label="None" value="" />
                         {planets.map((p, i) => (
-                          <option key={i} value={p.kepler_name}>
-                            {p.kepler_name}
+                          <option key={i} value={p.keplerName}>
+                            {p.keplerName}
                           </option>
                         ))}
                       </Select>

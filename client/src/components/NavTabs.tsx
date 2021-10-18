@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary
   },
   branding:{
-    fontWeight:300,
+    fontWeight:200,
     [theme.breakpoints.down('xs')]:{
       fontSize: "1rem",
     },
@@ -71,10 +71,10 @@ export default function NavTabs({navState,setNavState}: NavTabProps): JSX.Elemen
           <Toolbar className={classes.toolbar}>
             <Grid container justifyContent="center">
               <Grid item container xs={10} sm={6} md={4} alignItems="center">
-                <img src={planet} width="24px" alt="planet logo" />
+                <img src={planet} width="20px" height="20px" alt="planet logo" />
                 <Box ml={1} clone>
                   <Typography className={classes.branding} variant="h5" component="h1">
-                    Artemis Mission Control
+                    Hyperion Mission Control
                   </Typography>
                 </Box>
               </Grid>

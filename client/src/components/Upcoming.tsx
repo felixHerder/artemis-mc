@@ -98,7 +98,7 @@ export default function Upcoming({
                     <TableCell>Mission</TableCell>
                     <TableCell>Rocket</TableCell>
                     <TableCell>Destination</TableCell>
-                    <TableCell className={classes.closeCol}></TableCell>
+                    <TableCell className={classes.closeCol}>Abort</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody className={classes.tableBody}>

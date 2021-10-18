@@ -3,11 +3,7 @@ const cors = require('cors');
 import path from 'path';
 import expressStaticGzip from 'express-static-gzip';
 import morgan from "morgan";
-
-import planetsRouter from'./routes/planets/planets.router';
-import launchesRouter from'./routes/launches/launches.router';
-import { nextTick } from 'process';
-
+import api from './routes/api';
 const app  = express();
 app.use(cors({
   origin: 'http://localhost:3000'
@@ -15,18 +11,20 @@ app.use(cors({
 app.use(morgan("short"))
 app.use(express.json());
 
-//emulate latency
-app.use((req,res,next)=>{
-  setTimeout(()=>next(),500)
-})
+// emulate latency
+// app.use((req,res,next)=>{
+//   setTimeout(()=>next(),500)
+// })
 
+//API
+app.use('/v1',api);
+
+//Serve client files with gzip
 const pathToClient = path.join(__dirname, '..', 'public')
-app.use('/',expressStaticGzip(pathToClient,{}));
-app.use('/planets',planetsRouter);
-app.use('/launches',launchesRouter);
-
+app.use('/',expressStaticGzip(pathToClient,{index:false}));
 app.get('/*',(req,res)=>{
   res.sendFile(path.join(pathToClient,'index.html'));
 })
+
 
 export default app;

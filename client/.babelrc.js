@@ -6,7 +6,6 @@ module.exports = {
         // useBuiltIns: "usage",
         // corejs: "3"
         // targets:{
-          
         // }
       },
     ],
@@ -14,6 +13,7 @@ module.exports = {
     "@babel/preset-typescript",
   ],
   plugins: [
+    ["@babel/plugin-syntax-dynamic-import"],
     [
       "@babel/plugin-transform-runtime",
       {
@@ -35,7 +35,7 @@ module.exports = {
           transform: "@material-ui/styles/esm/${member}",
           preventFullImport: true,
         },
-          "@material-ui/system": {
+        "@material-ui/system": {
           transform: "@material-ui/system/esm/${member}",
           preventFullImport: true,
         },

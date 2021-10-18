@@ -13,51 +13,7 @@ import {
   TableContainer,
   Button,
   CircularProgress,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    marginTop: theme.spacing(2),
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    minHeight: "80vh",
-  },
-  tableHead: {
-    backgroundColor: theme.palette.secondary.main,
-    borderBottomColor: theme.palette.primary.main,
-    "& th": {
-      color: theme.palette.secondary.contrastText,
-      borderRight: "1px solid",
-      borderRightColor: "#00000033",
-    },
-  },
-  tableBody: {
-    "& tr:nth-of-type(odd)": {
-      backgroundColor: theme.palette.background.paper,
-    },
-    "& tr:nth-of-type(even)": {
-      backgroundColor: theme.palette.grey[800],
-    },
-  },
-  closeCol: {
-    width: "64px",
-  },
-  abort: {
-    color: theme.palette.error.dark,
-    "&:hover": {
-      color: theme.palette.error.main,
-    },
-    minWidth: "32px",
-    lineHeight: 0.8,
-  },
-  abortLoader: {
-    color: theme.palette.error.dark,
-    display: "block",
-    margin: "0 auto",
-  },
-}));
+} from "@mui/material";
 
 export default function Upcoming({
   launches,
@@ -68,17 +24,14 @@ export default function Upcoming({
   abortLaunch: (id: number) => void;
   isPendingLaunch: boolean;
 }): JSX.Element {
-  const classes = useStyles();
   const [active, setActive] = React.useState(0);
   return (
     <Box position="absolute" width="100%">
-      <Container maxWidth="md" className={classes.container}>
-        <Paper variant="outlined" elevation={1} square>
-          <Box m={2} clone>
-            <Typography variant="h4" component="h2" align="center">
-              Upcoming
-            </Typography>
-          </Box>
+      <Container maxWidth="lg" sx={{ mt: 2, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "80vh" }}>
+        <Paper variant="outlined" elevation={0} square sx={{ p: { xs: 0, sm: 1, md: 4 } }}>
+          <Typography sx={{ m: 2 }} variant="h4" component="h2" align="center">
+            Upcoming
+          </Typography>
           <Divider />
           <Box p={2}>
             <Typography variant="body1" color="textSecondary" gutterBottom>
@@ -90,18 +43,37 @@ export default function Upcoming({
           </Box>
           <Box px={2} mb={2}>
             <TableContainer component={Paper} elevation={3} square>
-              <Table size="small">
-                <TableHead className={classes.tableHead}>
+              <Table size="medium">
+                <TableHead
+                  sx={{
+                    bgcolor: "secondary.main",
+                    borderBottomColor: (theme) => theme.palette.primary.main,
+                    "& th": {
+                      color: "secondary.contrastText",
+                      borderRight: "1px solid",
+                      borderRightColor: "#00000033",
+                    },
+                  }}
+                >
                   <TableRow>
                     <TableCell>No.</TableCell>
                     <TableCell>Date</TableCell>
                     <TableCell>Mission</TableCell>
                     <TableCell>Rocket</TableCell>
                     <TableCell>Destination</TableCell>
-                    <TableCell className={classes.closeCol}>Abort</TableCell>
+                    <TableCell sx={{ width: "80px", textAlign: "center" }}>Abort</TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody className={classes.tableBody}>
+                <TableBody
+                  sx={{
+                    "& tr:nth-of-type(odd)": {
+                      bgcolor: "background.paper",
+                    },
+                    "& tr:nth-of-type(even)": {
+                      bgcolor: "grey[800]",
+                    },
+                  }}
+                >
                   {launches && launches.length
                     ? launches
                         .filter((l) => l.upcoming)
@@ -116,7 +88,16 @@ export default function Upcoming({
                               {!isPendingLaunch || !(active === ln.flightNumber) ? (
                                 <Button
                                   size="small"
-                                  className={classes.abort}
+                                  color="warning"
+                                  sx={{
+                                    color: "error.dark",
+                                    "&:hover": {
+                                      color: "error.main",
+                                    },
+                                    minWidth: "64px",
+                                    minHeight: "32px",
+                                    lineHeight: 0.8,
+                                  }}
                                   onClick={() => {
                                     setActive(ln.flightNumber);
                                     abortLaunch(ln.flightNumber);
@@ -126,8 +107,12 @@ export default function Upcoming({
                                   ✖
                                 </Button>
                               ) : (
-                                <Box mx="auto">
-                                  <CircularProgress className={classes.abortLoader} size={16} variant="indeterminate" />
+                                <Box display="flex" justifyContent="center">
+                                  <CircularProgress
+                                    sx={{ color: "error.dark", display: "block", margin: "0 auto" }}
+                                    size="32px"
+                                    variant="indeterminate"
+                                  />
                                 </Box>
                               )}
                             </TableCell>

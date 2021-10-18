@@ -1,46 +1,6 @@
 import React from "react";
-import {
-  Container,
-  Paper,
-  Typography,
-  Box,
-  Divider,
-  InputLabel,
-  FormControl,
-  TextField,
-  Button,
-  Select,
-  Grid,
-  CircularProgress,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Container, Paper, Typography, Box, Divider, InputLabel, FormControl, TextField, Button, Select, Grid, CircularProgress } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    marginTop: theme.spacing(2),
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    minHeight: "80vh",
-  },
-  form: {
-    "& input[type='date']::-webkit-calendar-picker-indicator": {
-      filter: "invert(1)",
-    },
-  },
-  launch: {
-    width: "100%",
-    minHeight: "4em",
-    position: "relative",
-  },
-  loader: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%,-50%)",
-    height: "32px",
-  },
-}));
 type LaunchProps = {
   planets: PlanetData[];
   submitLaunch: (e: React.SyntheticEvent) => void;
@@ -49,16 +9,13 @@ type LaunchProps = {
   setLaunchData?: React.Dispatch<React.SetStateAction<LaunchData>>;
 };
 export default function Launch({ planets, submitLaunch, isPendingLaunch }: LaunchProps): JSX.Element {
-  const classes = useStyles();
   return (
     <Box position="absolute" width="100%">
-      <Container maxWidth="md" className={classes.container}>
-        <Paper variant="outlined" elevation={1} square>
-          <Box m={2} clone>
-            <Typography variant="h4" component="h2" align="center">
-              Launch
-            </Typography>
-          </Box>
+      <Container maxWidth="lg" sx={{ mt: 2, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "80vh" }}>
+        <Paper variant="outlined" elevation={0} square sx={{ p: { xs: 0, sm: 1, md: 4 } }}>
+          <Typography sx={{ m: 2 }} variant="h4" component="h2" align="center">
+            Launch
+          </Typography>
           <Divider />
           <Box p={2}>
             <Typography variant="body1" color="textSecondary" gutterBottom>
@@ -81,10 +38,14 @@ export default function Launch({ planets, submitLaunch, isPendingLaunch }: Launc
           <Box p={2}>
             <form autoComplete="off" onSubmit={submitLaunch}>
               <Grid container justifyContent="space-between">
-                <Grid item sm={9} md={8} direction="row" container spacing={2}>
+                <Grid item sm={9} md={8} direction="row" container gap={2}>
                   <Grid item xs={12}>
                     <TextField
-                      classes={{ root: classes.form }}
+                      sx={{
+                        "& input[type='date']::-webkit-calendar-picker-indicator": {
+                          filter: "invert(1)",
+                        },
+                      }}
                       fullWidth
                       id="launchDate"
                       label="Launch Date"
@@ -117,16 +78,22 @@ export default function Launch({ planets, submitLaunch, isPendingLaunch }: Launc
                   </Grid>
                 </Grid>
                 <Grid item xs sm={3} md={4}>
-                  <Box height="100%" display="flex" alignItems="flex-end" pt={2}>
-                    <Button className={classes.launch} type="submit" size="large" color="secondary" variant="contained" disabled={isPendingLaunch}>
+                  <Box height="100%" display="flex" alignItems="flex-end" justifyContent="center" pt={2}>
+                    <Button
+                      sx={{ width: "90%", minHeight: "4em", position: "relative" }}
+                      type="submit"
+                      size="large"
+                      color="secondary"
+                      variant="contained"
+                      disabled={isPendingLaunch}
+                    >
                       Launch Mission
                       {isPendingLaunch ? (
-                        <Box className={classes.loader}>
+                        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", height: "32px" }}>
                           <CircularProgress color="secondary" variant="indeterminate" size={32} />
                         </Box>
                       ) : null}
                     </Button>
-                    
                   </Box>
                 </Grid>
               </Grid>

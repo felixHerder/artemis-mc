@@ -1,10 +1,10 @@
-import {createTheme, responsiveFontSizes} from '@material-ui/core/styles'
-import {lightBlue,orange} from '@material-ui/core/colors';
+import {createTheme, responsiveFontSizes} from '@mui/material/styles'
+import {lightBlue,orange} from '@mui/material/colors';
 import '@fontsource/urbanist/latin.css';
 
 const  theme = createTheme({
   palette: {
-    type: 'dark',
+    mode: 'dark',
     primary: lightBlue,
     secondary: orange,
     background:{
@@ -15,27 +15,35 @@ const  theme = createTheme({
   typography:{
     fontFamily:'"Urbanist","Helvetica", "Arial", sans-serif'
   },
-  overrides:{
+  components:{
     MuiPaper:{
-      outlined:{
+      styleOverrides:{
+        outlined:{
         borderColor: `${lightBlue[900]}88`
+      }
       }
     },
     MuiAppBar:{
-      root:{        
-        borderTop: "1px solid",
-        borderTopColor:`${lightBlue[900]}aa`
+      styleOverrides:{
+        root:{        
+          borderTop: "1px solid",
+          borderTopColor:`${lightBlue[900]}aa`
+        }
       }
     },
     MuiTypography:{
-      h4:{
-        fontWeight: 100,
-        color: orange[100]
+      styleOverrides:{
+        h4:{
+          fontWeight: 100,
+          color: orange[100]
+        }
       }
     },
     MuiTableCell:{
-      root:{
-        borderBottomColor: `${lightBlue[900]}44`,
+      styleOverrides:{
+        root:{
+          borderBottomColor: `${lightBlue[900]}44`,
+        }
       }
     }
   }

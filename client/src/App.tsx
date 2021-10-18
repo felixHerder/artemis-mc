@@ -1,38 +1,30 @@
-import React,{Suspense,lazy} from "react";
-import { CssBaseline, Grow, Snackbar } from "@material-ui/core";
-import { ThemeProvider,makeStyles } from "@material-ui/core/styles";
+import React, { Suspense, lazy } from "react";
+import { CssBaseline, Snackbar, CircularProgress, Box } from "@mui/material";
 import { Route, Switch, useLocation } from "react-router-dom";
 
-import theme from "./theme";
 import NavTabs from "./components/NavTabs";
 import FixedBkg from "./components/FixedBkg";
 import usePlanets from "./hooks/usePlanets";
-import { TransitionGroup } from "react-transition-group";
-import { TransitionProps } from "@material-ui/core/transitions/transition";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import useLaunches from "./hooks/useLaunches";
 
-const Launch = lazy(()=>import ( "./components/Launch"));
-const Upcoming = lazy(()=>import ( "./components/Upcoming"));
-const History = lazy(()=>import ( "./components/History"));
+const Launch = lazy(() => import("./components/Launch"));
+const Upcoming = lazy(() => import("./components/Upcoming"));
+const History = lazy(() => import("./components/History"));
+import "./App.scss";
 
-const useStyles= makeStyles(theme=>({
-  snackBar: {
-    "& .MuiSnackbarContent-message": { 
-     color:"white"
-     },
-     '& .MuiSnackbarContent-root':{
-      minWidth:0,
-      backgroundColor: (ok) => (ok === true ? theme.palette.success.dark : theme.palette.error.dark)
-     }
-  },
-}));
+
+const LoadingCircular = () => (
+  <Box sx={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+    <CircularProgress variant="indeterminate" size="64px" />
+  </Box>
+);
 
 export default function App(): JSX.Element {
   const planets = usePlanets();
   const location = useLocation();
   const { launches, submitLaunch, isPendingLaunch, abortLaunch, submitResponse } = useLaunches();
   const [navState, setNavState] = React.useState(0);
-  const classes= useStyles(submitResponse.ok);
 
   React.useEffect(() => {
     if (location.pathname === "/launch") setNavState(0);
@@ -41,43 +33,42 @@ export default function App(): JSX.Element {
     // eslint-disable-next-line
   }, []);
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <CssBaseline />
       <NavTabs {...{ navState, setNavState }} />
-      <Suspense fallback={<div>Loading...</div>}>
-        <TransitionGroup component={null}>
-          <Grow key={location.key} timeout={{ enter: 300, exit: 150 }}>
-            <TransitionPropsWrapper>
-              <Switch location={location}>
-                <Route path={["/", "/launch"]} exact>
-                  <Launch {...{ planets, submitLaunch, isPendingLaunch }} />
-                </Route>
-                <Route path={"/upcoming"} exact>
-                  <Upcoming {...{ launches, abortLaunch, isPendingLaunch }} />
-                </Route>
-                <Route path={"/history"} exact>
-                  <History {...{ launches }} />
-                </Route>
-              </Switch>
-            </TransitionPropsWrapper>
-          </Grow>
-        </TransitionGroup>
-      </Suspense>
+      <TransitionGroup>
+        <CSSTransition timeout={200} classNames="page" key={location.key}>
+          <Suspense fallback={<LoadingCircular />}>
+            <Switch location={location}>
+              <Route path={["/", "/launch"]} exact>
+                <Launch {...{ planets, submitLaunch, isPendingLaunch }} />
+              </Route>
+              <Route path={"/upcoming"} exact>
+                <Upcoming {...{ launches, abortLaunch, isPendingLaunch }} />
+              </Route>
+              <Route path={"/history"} exact>
+                <History {...{ launches }} />
+              </Route>
+            </Switch>
+          </Suspense>
+        </CSSTransition>
+      </TransitionGroup>
       <Snackbar
-        className={classes.snackBar}
+        sx={{
+          "& .MuiSnackbarContent-message": {
+            color: "white",
+          },
+          "& .MuiSnackbarContent-root": {
+            minWidth: 0,
+            bgcolor: (submitResponse.ok === true) ? "success.dark" : "error.dark",
+          },
+        }}
         open={Boolean(submitResponse.message.length) && !isPendingLaunch}
         autoHideDuration={2000}
         message={submitResponse.message}
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       />
       <FixedBkg />
-    </ThemeProvider>
+    </>
   );
-}
-
-class TransitionPropsWrapper extends React.Component<{ children: React.ReactNode } & TransitionProps> {
-  render() {
-    const { children, ...rest } = this.props;
-    return <div {...rest}>{children}</div>;
-  }
 }

@@ -7,7 +7,6 @@ import {
   Container,
   Typography,
   Box,
-  Hidden,
   IconButton,
   Drawer,
   Toolbar,
@@ -16,90 +15,58 @@ import {
   List,
   ListItemText,
   Divider,
-} from "@material-ui/core";
-import { Menu, ChevronRight, DoubleArrow, Schedule, History, } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+} from "@mui/material";
+import { Menu, ChevronRight, DoubleArrow, Schedule, History } from "@mui/icons-material";
+import { Link as RouterLink } from "react-router-dom";
 import planet from "../Assets/jupiter_32.png";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    background: theme.palette.grey[800],
-    color: theme.palette.text.primary
-  },
-  branding:{
-    fontWeight:200,
-    [theme.breakpoints.down('xs')]:{
-      fontSize: "1rem",
-    },
-  },
-  drawerList:{
-    width:theme.spacing(24),
-  },
-  tabs:{
-    [theme.breakpoints.down('sm')]:{
-      '& .MuiButtonBase-root,':{
-        fontSize: "0.65rem"
-      },
-      '& .MuiTab-root':{
-        minWidth:"100px"
-      }
-    }
-  },
-  toolbar:{
-
-      [theme.breakpoints.down('sm')]:{
-        padding: "0 12px"
-      },
-      [theme.breakpoints.down('xs')]:{
-        padding: "0 6px"
-      }
-    
-  }
-}));
 type NavTabProps = {
   navState: number;
-  setNavState: React.Dispatch<SetStateAction<number>>
-}
-export default function NavTabs({navState,setNavState}: NavTabProps): JSX.Element {
+  setNavState: React.Dispatch<SetStateAction<number>>;
+};
+export default function NavTabs({ navState, setNavState }: NavTabProps): JSX.Element {
   const [open, setOpen] = React.useState(false);
-  const classes = useStyles();
   return (
     <>
-      <AppBar position="relative" className={classes.root}>
+      <AppBar position="relative" sx={{ bgcolor: "grey[800]", color: "text.primary" }}>
         <Container maxWidth="lg">
-          <Toolbar className={classes.toolbar}>
+          <Toolbar sx={{ padding: { xs: "0 6px", sm: "0 12px" } }}>
             <Grid container justifyContent="center">
               <Grid item container xs={10} sm={6} md={4} alignItems="center">
                 <img src={planet} width="20px" height="20px" alt="planet logo" />
-                <Box ml={1} clone>
-                  <Typography className={classes.branding} variant="h5" component="h1">
-                    Hyperion Mission Control
-                  </Typography>
-                </Box>
+                <Typography sx={{ ml: 1, fontWeight: 200, fontSize: { xs: "1rem", sm: "1.2rem", md: "1.5rem" } }} variant="h5" component="h1">
+                  Hyperion Mission Control
+                </Typography>
               </Grid>
               <Grid item container xs={2} sm={6} md={8} alignItems="flex-end" justifyContent="flex-end">
-                <Box display="inline-block">
-                  <Hidden  xsDown>
-                    <Tabs  className={classes.tabs} value={navState} variant="standard"  indicatorColor="secondary" onChange={(e, nv) => setNavState(nv)}>
-                      <Tab icon={<DoubleArrow />} component={RouterLink} label="Launch" to="/launch" />
-                      <Tab icon={<Schedule />} component={RouterLink} label="Upcoming" to="/upcoming" />
-                      <Tab icon={<History />} component={RouterLink} label="History" to="/history" />
-                    </Tabs>
-                  </Hidden>
-                  <Hidden smUp>
-                    <IconButton onClick={() => setOpen(true)}>
-                      <Menu />
-                    </IconButton>
-                  </Hidden>
-                </Box>
+                <Tabs
+                  sx={{
+                    display: { xs: "none", sm: "block" },
+                    "& .MuiTab-root": {
+                      minWidth: { sm: "90px", md: "120px", lg: "180px" },
+                    },
+                    "& .MuiTabs-scroller": { display: "block" },
+                  }}
+                  value={navState}
+                  textColor="secondary"
+                  indicatorColor="secondary"
+                  onChange={(e, nv) => setNavState(nv)}
+                >
+                  <Tab icon={<DoubleArrow />} component={RouterLink} label="Launch" to="/launch" />
+                  <Tab icon={<Schedule />} component={RouterLink} label="Upcoming" to="/upcoming" />
+                  <Tab icon={<History />} component={RouterLink} label="History" to="/history" />
+                </Tabs>
+
+                <IconButton sx={{ display: { xs: "block", sm: "none" } }} onClick={() => setOpen(true)}>
+                  <Menu />
+                </IconButton>
               </Grid>
             </Grid>
           </Toolbar>
         </Container>
       </AppBar>
-      <Drawer  variant="temporary" anchor="right" open={open} onClose={() => setOpen(false)}>
-        <List  className={classes.drawerList} component="nav" onClick={() => setOpen(false)}>
+      <Drawer variant="temporary" anchor="right" open={open} onClose={() => setOpen(false)}>
+        <List component="nav" onClick={() => setOpen(false)}>
           <ListItem button component={RouterLink} to="/launch">
             <ListItemIcon>
               <DoubleArrow />

@@ -4,7 +4,7 @@
   "description": "API  NASA Mission Controll",
   "main": "index.js",
   "scripts": {
-    "prestart":"npm run build",
+    "prestart": "npm run build",
     "start": "node ./build/server.js",
     "dev": "ts-node-dev ./src/server.ts",
     "build": "rimraf build && tsc -p tsconfig.json",
@@ -17,6 +17,7 @@
     "@types/express": "^4.17.13",
     "@types/morgan": "^1.9.3",
     "@types/node": "^16.9.1",
+    "artemis-nasa": "file:..",
     "axios": "^0.23.0",
     "cors": "^2.8.5",
     "csv-parse": "^4.16.0",

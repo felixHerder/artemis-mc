@@ -1,13 +1,18 @@
 const API_URL = process.env.API_URL;
 
-async function httpGetPlanets(): Promise<PlanetData[]> {
+export async function httpGetPlanets(): Promise<PlanetData[]> {
   const response = await fetch(`${API_URL}/planets`);
   return await response.json();
   // Load planets and return as JSON.
 }
 
-async function httpGetLaunches(): Promise<LaunchData[]> {
-  const response = await fetch(`${API_URL}/launches`);
+export async function httpGetRockets(): Promise<{name:string}[]> {
+  const response = await fetch(`${API_URL}/rockets`);
+  return await response.json();
+  // Load planets and return as JSON.
+}
+export async function httpGetLaunches(limit = 0,page = 0,upcoming = false,sort="flightNumber",order="desc"): Promise<LaunchData[]> {
+  const response = await fetch(`${API_URL}/launches?limit=${limit}&page=${page}&upcoming=${upcoming}&sort=${sort}&order=${order}`);
   const data: LaunchData[] = await response.json();
 
   //format launchdata date value string to Date obj
@@ -16,11 +21,10 @@ async function httpGetLaunches(): Promise<LaunchData[]> {
     return d;
   });
 
-  return data.sort((a, b) => a.flightNumber - b.flightNumber);
-  // Load launches, sort by flight number, and return as JSON.
+  return data;
 }
 // eslint-disable-next-line
-async function httpSubmitLaunch(launch: FormLaunchData) {
+export async function httpSubmitLaunch(launch: FormLaunchData) {
   try {
     return await fetch(`${API_URL}/launches`, {
       method: "POST",
@@ -38,7 +42,7 @@ async function httpSubmitLaunch(launch: FormLaunchData) {
   // Submit given launch data to launch system.
 }
 // eslint-disable-next-line
-async function httpAbortLaunch(id: number) {
+export async function httpAbortLaunch(id: number) {
   try{
     return await fetch(`${API_URL}/launches/${id}`, {
       method: "DELETE",
@@ -53,4 +57,20 @@ async function httpAbortLaunch(id: number) {
   // Delete launch with given ID.
 }
 
-export { httpGetPlanets, httpGetLaunches, httpSubmitLaunch, httpAbortLaunch };
+// eslint-disable-next-line
+export async function httpResetLaunchData(){
+  try{
+    return await fetch(`${API_URL}/launches?resetdata=true`, {
+      method: "DELETE",
+    });
+  }
+  catch(error){
+    console.log("error reseting launch data:",error)
+    return {
+      ok:false
+    }
+  }
+  // reset launch data
+}
+
+

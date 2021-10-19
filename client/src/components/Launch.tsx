@@ -1,14 +1,13 @@
-import React from "react";
+import React,{useContext} from "react";
 import { Container, Paper, Typography, Box, Divider, InputLabel, FormControl, TextField, Button, Select, Grid, CircularProgress } from "@mui/material";
+import usePlanets from "../hooks/usePlanets";
+import useRockets from "../hooks/useRockets";
+import { LaunchesContext } from "../App";
 
-type LaunchProps = {
-  planets: PlanetData[];
-  submitLaunch: (e: React.SyntheticEvent) => void;
-  isPendingLaunch: boolean;
-  launchData?: LaunchData;
-  setLaunchData?: React.Dispatch<React.SetStateAction<LaunchData>>;
-};
-export default function Launch({ planets, submitLaunch, isPendingLaunch }: LaunchProps): JSX.Element {
+export default function Launch(): JSX.Element {
+  const { submitLaunch, isPendingLaunch } = useContext(LaunchesContext);
+  const planets = usePlanets();
+  const rockets = useRockets();
   return (
     <Box position="absolute" width="100%">
       <Container maxWidth="lg" sx={{ mt: 2, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "80vh" }}>
@@ -61,7 +60,17 @@ export default function Launch({ planets, submitLaunch, isPendingLaunch }: Launc
                     <TextField fullWidth id="misionName" label="Mission Name" variant="outlined" name="missionName" required />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField fullWidth id="rocketType" label="Rocket Type" variant="outlined" name="rocketType" required />
+                    <FormControl fullWidth variant="outlined">
+                      <InputLabel htmlFor="rocket">Rocket Type</InputLabel>
+                      <Select id="rocketType" native label="Rocket Type" name="rocketType" required>
+                        <option aria-label="None" value="" />
+                        {rockets.map((r, i) => (
+                          <option key={i} value={r.name}>
+                            {r.name}
+                          </option>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl fullWidth variant="outlined">

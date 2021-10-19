@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, createContext } from "react";
 import { CssBaseline, Snackbar, CircularProgress, Box } from "@mui/material";
 import { Route, Switch, useLocation } from "react-router-dom";
 
@@ -6,13 +6,12 @@ import NavTabs from "./components/NavTabs";
 import FixedBkg from "./components/FixedBkg";
 import usePlanets from "./hooks/usePlanets";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import useLaunches from "./hooks/useLaunches";
+import useLaunches,{useLaunchesInterface} from "./hooks/useLaunches";
 
 const Launch = lazy(() => import("./components/Launch"));
 const Upcoming = lazy(() => import("./components/Upcoming"));
 const History = lazy(() => import("./components/History"));
 import "./App.scss";
-
 
 const LoadingCircular = () => (
   <Box sx={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -20,10 +19,13 @@ const LoadingCircular = () => (
   </Box>
 );
 
+export const LaunchesContext = createContext<useLaunchesInterface>({} as useLaunchesInterface);
+
 export default function App(): JSX.Element {
   const planets = usePlanets();
   const location = useLocation();
-  const { launches, submitLaunch, isPendingLaunch, abortLaunch, submitResponse } = useLaunches();
+  const useLaunchesHook = useLaunches();
+  const {submitResponse,isPendingLaunch} = useLaunchesHook;
   const [navState, setNavState] = React.useState(0);
 
   React.useEffect(() => {
@@ -39,17 +41,19 @@ export default function App(): JSX.Element {
       <TransitionGroup>
         <CSSTransition timeout={200} classNames="page" key={location.key}>
           <Suspense fallback={<LoadingCircular />}>
-            <Switch location={location}>
-              <Route path={["/", "/launch"]} exact>
-                <Launch {...{ planets, submitLaunch, isPendingLaunch }} />
-              </Route>
-              <Route path={"/upcoming"} exact>
-                <Upcoming {...{ launches, abortLaunch, isPendingLaunch }} />
-              </Route>
-              <Route path={"/history"} exact>
-                <History {...{ launches }} />
-              </Route>
-            </Switch>
+            <LaunchesContext.Provider value={useLaunchesHook}>
+              <Switch location={location}>
+                <Route path={["/", "/launch"]} exact>
+                  <Launch />
+                </Route>
+                <Route path={"/upcoming"} exact>
+                  <Upcoming />
+                </Route>
+                <Route path={"/history"} exact>
+                  <History />
+                </Route>
+              </Switch>
+            </LaunchesContext.Provider>
           </Suspense>
         </CSSTransition>
       </TransitionGroup>
@@ -60,7 +64,7 @@ export default function App(): JSX.Element {
           },
           "& .MuiSnackbarContent-root": {
             minWidth: 0,
-            bgcolor: (submitResponse.ok === true) ? "success.dark" : "error.dark",
+            bgcolor: submitResponse.ok === true ? "success.dark" : "error.dark",
           },
         }}
         open={Boolean(submitResponse.message.length) && !isPendingLaunch}

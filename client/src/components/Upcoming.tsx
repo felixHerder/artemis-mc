@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect,useContext } from "react";
 import {
   Container,
   Paper,
@@ -14,17 +14,16 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
+import { LaunchesContext } from "../App";
 
-export default function Upcoming({
-  launches,
-  abortLaunch,
-  isPendingLaunch,
-}: {
-  launches?: LaunchData[];
-  abortLaunch: (id: number) => void;
-  isPendingLaunch: boolean;
-}): JSX.Element {
+export default function Upcoming(): JSX.Element {
+  const { launches, getLaunches, isPendingLaunch, abortLaunch, resetLaunchData } = useContext(LaunchesContext);
   const [active, setActive] = React.useState(0);
+
+  useEffect(() => {
+    getLaunches(0, 0, true);
+  }, [getLaunches]);
+
   return (
     <Box position="absolute" width="100%">
       <Container maxWidth="lg" sx={{ mt: 2, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "80vh" }}>
@@ -38,12 +37,12 @@ export default function Upcoming({
               Upcoming missions including both SpaceX launches and newly scheduled ESA rockets.{" "}
             </Typography>
             <Typography variant="body1" color="textSecondary">
-              Warning! Clicking on the ✖ aborts the mission.
+              Warning! Clicking on ✖ aborts the mission.
             </Typography>
           </Box>
           <Box px={2} mb={2}>
             <TableContainer component={Paper} elevation={3} square>
-              <Table size="medium">
+              <Table size="small">
                 <TableHead
                   sx={{
                     bgcolor: "secondary.main",
@@ -108,11 +107,7 @@ export default function Upcoming({
                                 </Button>
                               ) : (
                                 <Box display="flex" justifyContent="center">
-                                  <CircularProgress
-                                    sx={{ color: "error.dark", display: "block", margin: "0 auto" }}
-                                    size="32px"
-                                    variant="indeterminate"
-                                  />
+                                  <CircularProgress sx={{ color: "error.dark", display: "block", margin: "0 auto" }} size="32px" variant="indeterminate" />
                                 </Box>
                               )}
                             </TableCell>
@@ -123,6 +118,20 @@ export default function Upcoming({
               </Table>
             </TableContainer>
           </Box>
+          <Button
+            variant="contained"
+            size="medium"
+            onClick={() => {
+              resetLaunchData();
+              setActive(999);
+            }}
+            sx={{ m: 2, position: "relative" }}
+            color="secondary"
+            disabled={isPendingLaunch}
+          >
+            Reset Data
+            {isPendingLaunch && active === 999 ? <CircularProgress sx={{ position: "absolute" }} color="warning" variant="indeterminate" size={16} /> : null}
+          </Button>
         </Paper>
       </Container>
     </Box>

@@ -10,12 +10,12 @@ const launchesSchema = new mongoose.Schema({
   rocket: { type: String, required: true },
   destination: {
     type: String,
-    ref: "Planet",
   },
   customers: [String],
-  upcoming: { type: Boolean, required: true,default: true  },
+  upcoming: { type: Boolean, required: true, default: true },
   success: { type: Boolean, required: true, default: true },
 });
 
 
-export default mongoose.model('Launch',launchesSchema);
+export const launchesDatabase = mongoose.model("Launch", launchesSchema);
+export const launchesBackupdb = mongoose.model("LaunchBackup", launchesSchema);

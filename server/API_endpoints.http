@@ -3,6 +3,19 @@ GET http://localhost:8000/v1/planets HTTP/1.1
 GET http://localhost:8000/v1/launches HTTP/1.1
 ###
 
+GET http://localhost:8000/v1/rockets HTTP/1.1
+###
+
+GET http://localhost:8000/v1/launches?limit=10&page=0 HTTP/1.1
+###
+
+
+GET http://localhost:8000/v1/launches?limit=10&page=0&sort=launchDate&order=desc HTTP/1.1
+###
+
+GET http://localhost:8000/v1/launches?upcoming=true HTTP/1.1
+###
+
 POST http://localhost:8000/v1/launches HTTP/1.1
 Content-Type: application/json
 
@@ -15,4 +28,7 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:8000/v1/launches/106 HTTP/1.1
+###
+
+DELETE http://localhost:8000/v1/launches?resetdata=true HTTP/1.1
 ###

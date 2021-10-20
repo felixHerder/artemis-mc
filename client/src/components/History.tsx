@@ -52,7 +52,7 @@ export default function History(): JSX.Element {
   };
   return (
     <Box position="static" width="100%">
-      <Container maxWidth="lg" sx={{ mt: 2, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "80vh" }}>
+      <Container maxWidth="lg" sx={{ my: 3, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "80vh" }}>
         <Paper variant="outlined" elevation={0} square sx={{ p: { xs: 0, sm: 1, md: 4 } }}>
           <Typography sx={{ m: 2 }} variant="h4" component="h2" align="center">
             History

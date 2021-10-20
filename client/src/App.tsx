@@ -39,7 +39,7 @@ export default function App(): JSX.Element {
     <>
       <CssBaseline />
       <LaunchesContext.Provider value={useLaunchesHook}>
-        <Box component="main" sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+        <Box component="main" sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
           <NavTabs {...{ navState, setNavState }} />
           <TransitionGroup component={null}>
             <CSSTransition timeout={200} classNames="page" key={location.key}>

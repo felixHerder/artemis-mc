@@ -13,7 +13,7 @@
     "client-dev": "npm start --prefix client",
     "client-build": "npm run build --prefix client",
     "start": "npm run server",
-    "deploy": "npm-run-all --parallel client-build server-build server"
+    "deploy": "npm-run-all client-build server-build server"
   },
   "repository": {
     "type": "git",

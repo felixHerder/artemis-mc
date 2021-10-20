@@ -4,7 +4,6 @@
   "description": "API  NASA Mission Controll",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm run build",
     "start": "node ./build/server.js",
     "dev": "ts-node-dev ./src/server.ts",
     "build": "rimraf build && tsc -p tsconfig.json",

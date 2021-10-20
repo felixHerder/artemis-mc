@@ -9,7 +9,7 @@ export default function Footer(): JSX.Element {
         <Typography sx={{ width: "50%" }} variant="caption" color="text.disabled">
           Launch data from{" "}
           <span>
-            <Link underline="hover" color="text.secondary" href="https://github.com/r-spacex/SpaceX-API">
+            <Link underline="hover" color="text.secondary" href="https://github.com/r-spacex/SpaceX-API" target="_blank">
               api.spacexdata.com
             </Link>
           </span>

@@ -46,7 +46,9 @@ function useLaunches(): useLaunchesInterface {
     setPendingLaunch(true);
     const eventTarget = e.target as HTMLFormElement;
     const data = new FormData(eventTarget);
-    const launchDate = new Date(data.get("launchDate") as string);
+    const rawDate  = String(data.get("launchDate")); 
+    const dateParts = rawDate.split('/');
+    const launchDate = new Date(+dateParts[2], Number(dateParts[1]) - 1, +dateParts[0]);
     const launchpad = data.get("launchPad") as string;
     const rocket = data.get("rocketType") as string;
     const destination = data.get("destination") as string;

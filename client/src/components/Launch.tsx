@@ -1,18 +1,24 @@
 import React, { useContext, useEffect } from "react";
 import { Container, Paper, Typography, Box, Divider, InputLabel, FormControl, TextField, Button, Select, Grid, CircularProgress } from "@mui/material";
+import DateAtapter from "@mui/lab/AdapterDateFns";
+import enLocale from "date-fns/locale/en-GB";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
 import usePlanets from "../hooks/usePlanets";
 import useRockets from "../hooks/useRockets";
-import useLaunchpads from '../hooks/useLaunchpads';
+import useLaunchpads from "../hooks/useLaunchpads";
 import { LaunchesContext } from "../App";
 
 export default function Launch(): JSX.Element {
-  const { submitLaunch, isPendingLaunch, } = useContext(LaunchesContext);
+  const { submitLaunch, isPendingLaunch } = useContext(LaunchesContext);
   const planets = usePlanets();
   const rockets = useRockets();
   const launchpads = useLaunchpads();
+  const [value, setValue] = React.useState(new Date("2031-02-15"));
+
   return (
     <Box position="static" width="100%">
-      <Container maxWidth="lg" sx={{ my: 3, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "80vh" }}>
+      <Container maxWidth="lg" sx={{ my:3 ,px:{ xs: 0, sm: 1, md: 3 }, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "80vh" }}>
         <Paper variant="outlined" elevation={0} square sx={{ p: { xs: 0, sm: 1, md: 4 } }}>
           <Typography sx={{ m: 2 }} variant="h4" component="h2" align="center">
             Launch
@@ -41,26 +47,23 @@ export default function Launch(): JSX.Element {
               <Grid container justifyContent="space-between">
                 <Grid item sm={9} md={8} direction="row" container gap={2}>
                   <Grid item xs={12}>
-                    <TextField
-                      sx={{
-                        "& input[type='date']::-webkit-calendar-picker-indicator": {
-                          filter: "invert(1)",
-                        },
-                      }}
-                      fullWidth
-                      id="launchDate"
-                      label="Launch Date"
-                      type="date"
-                      variant="outlined"
-                      defaultValue="2031-02-15"
-                      InputLabelProps={{ shrink: true }}
-                      name="launchDate"
-                      required
-                    />
+                    <LocalizationProvider dateAdapter={DateAtapter} locale={enLocale}>
+                      <DatePicker
+                        label="Launch Date"
+                        value={value}
+                        onChange={(newValue) => {
+                          setValue(newValue as Date);
+                        }}
+                        renderInput={(params) => <TextField InputLabelProps={{ shrink: true }} id="launchDate" value={value} name="launchDate" required fullWidth {...params} />}
+                      />
+                    </LocalizationProvider>
                   </Grid>
+
                   <Grid item xs={12}>
                     <FormControl fullWidth variant="outlined">
-                      <InputLabel htmlFor="launchPad" required>Launch Pad</InputLabel>
+                      <InputLabel htmlFor="launchPad" required>
+                        Launch Pad
+                      </InputLabel>
                       <Select id="launchPad" native label="Launch Pad" name="launchPad" required>
                         <option aria-label="None" value="" />
                         {launchpads.map((lpd, i) => (
@@ -74,7 +77,9 @@ export default function Launch(): JSX.Element {
 
                   <Grid item xs={12}>
                     <FormControl fullWidth variant="outlined">
-                      <InputLabel htmlFor="rocketType" required>Rocket Type</InputLabel>
+                      <InputLabel htmlFor="rocketType" required>
+                        Rocket Type
+                      </InputLabel>
                       <Select id="rocketType" native label="Rocket Type" name="rocketType" required>
                         <option aria-label="None" value="" />
                         {rockets.map((r, i) => (
@@ -85,10 +90,12 @@ export default function Launch(): JSX.Element {
                       </Select>
                     </FormControl>
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <FormControl fullWidth variant="outlined">
-                      <InputLabel htmlFor="destination" required>Destination Exoplanet</InputLabel>
+                      <InputLabel htmlFor="destination" required>
+                        Destination Exoplanet
+                      </InputLabel>
                       <Select id="destination" native label="Destination Exoplanet" name="destination" required>
                         <option aria-label="None" value="" />
                         {planets.map((p, i) => (

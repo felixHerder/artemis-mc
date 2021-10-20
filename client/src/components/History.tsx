@@ -21,28 +21,26 @@ export default function History(): JSX.Element {
   const { launches, getLaunches } = useContext(LaunchesContext);
   const [page, setPage] = useState(0);
   const [rows, setRows] = useState(10);
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState(true);
+  const [sort, setSort] = useState("flightNumber");
   useEffect(() => {
     getLaunches(10, 0, false);
   }, [getLaunches]);
 
   const handlePageChange = async (page: number) => {
-    await getLaunches(rows, page, false);
+    await getLaunches(rows, page, false, sort, !order ? 'asc' : 'desc');
     setPage(page);
   };
   const handleRowChange = async (rows: number) => {
-    await getLaunches(rows, 0, false);
+    await getLaunches(rows, 0, false, sort, !order ? 'asc' : 'desc');
     setPage(0);
     setRows(rows);
   };
   const handleSort = async (field: string) => {
-    await getLaunches(rows, 0, false, field, order);
+    await getLaunches(rows, 0, false, field, order ? 'asc' : 'desc');
+    setOrder(!order);
+    setSort(field);
     setPage(0);
-    if (order === "desc") {
-      setOrder("asc");
-    } else {
-      setOrder("desc");
-    }
   };
   return (
     <Box position="absolute" width="100%">
@@ -74,32 +72,32 @@ export default function History(): JSX.Element {
                 >
                   <TableRow sx={{ "& button": { width: "100%", color: "secondary.contrastText" } }}>
                     <TableCell sx={{ width: "10%" }}>
-                      <Button  color="primary" onClick={() => handleSort("flightNumber")}>
+                      <Button color="primary" onClick={() => handleSort("flightNumber")}>
                         No.
                       </Button>
                     </TableCell>
                     <TableCell sx={{ width: "15%" }}>
-                      <Button  color="primary" onClick={() => handleSort("launchDate")}>
+                      <Button color="primary" onClick={() => handleSort("launchDate")}>
                         Date
                       </Button>
                     </TableCell>
                     <TableCell sx={{ width: "30%" }}>
-                      <Button  color="primary" onClick={() => handleSort("mission")}>
+                      <Button color="primary" onClick={() => handleSort("mission")}>
                         Mission
                       </Button>
-                    </TableCell >
+                    </TableCell>
                     <TableCell sx={{ width: "15%" }}>
-                      <Button  color="primary" onClick={() => handleSort("rocket")}>
+                      <Button color="primary" onClick={() => handleSort("rocket")}>
                         Rocket
                       </Button>
                     </TableCell>
                     <TableCell sx={{ width: "10%" }}>
-                      <Button  color="primary" onClick={() => handleSort("destination")}>
+                      <Button color="primary" onClick={() => handleSort("destination")}>
                         Destination
                       </Button>
                     </TableCell>
                     <TableCell sx={{ width: "20%" }}>
-                      <Button  color="primary" onClick={() => handleSort("customers")}>
+                      <Button color="primary" onClick={() => handleSort("customers")}>
                         Customers
                       </Button>
                     </TableCell>

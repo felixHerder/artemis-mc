@@ -7,4 +7,9 @@ dist/
 /coverage
 */coverage
 client/.env
+*/env
 
+public/
+*/public/
+build/
+*/build/

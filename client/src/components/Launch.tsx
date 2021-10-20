@@ -1,11 +1,11 @@
-import React,{useContext} from "react";
+import React, { useContext, useEffect } from "react";
 import { Container, Paper, Typography, Box, Divider, InputLabel, FormControl, TextField, Button, Select, Grid, CircularProgress } from "@mui/material";
 import usePlanets from "../hooks/usePlanets";
 import useRockets from "../hooks/useRockets";
 import { LaunchesContext } from "../App";
 
 export default function Launch(): JSX.Element {
-  const { submitLaunch, isPendingLaunch } = useContext(LaunchesContext);
+  const { submitLaunch, isPendingLaunch, } = useContext(LaunchesContext);
   const planets = usePlanets();
   const rockets = useRockets();
   return (

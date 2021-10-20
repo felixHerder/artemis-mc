@@ -1,10 +1,14 @@
-import React, { useCallback, useState,createContext } from "react";
+import React, { useCallback, useState } from "react";
 
 import { httpGetLaunches, httpSubmitLaunch, httpAbortLaunch, httpResetLaunchData } from "./requests";
 
 export interface useLaunchesInterface{
-  launches: LaunchData[];
+  launchesHistory: LaunchData[];
+  saveLaunchesHistory: React.Dispatch<React.SetStateAction<LaunchData[]>>
+  launchesUpcoming: LaunchData[];
+  saveLaunchesUpcoming: React.Dispatch<React.SetStateAction<LaunchData[]>>
   isPendingLaunch: boolean;
+  setPendingLaunch: React.Dispatch<React.SetStateAction<boolean>>;
   submitResponse: {
     message: string;
     ok: boolean;
@@ -13,18 +17,25 @@ export interface useLaunchesInterface{
   abortLaunch: (e: number) => Promise<void>;
   resetLaunchData: () => Promise<void>;
   getLaunches: (limit?: number, page?: number, upcoming?: boolean,sort?:string,order?:string) => Promise<void>;
+  badgeInv: {[k:string]:boolean};
+  setBadgeInv: React.Dispatch<React.SetStateAction<{[k:string]:boolean}>>;
 }
 
 function useLaunches():useLaunchesInterface  {
-  const [launches, saveLaunches] = useState<LaunchData[]>([]);
+  const [launchesHistory, saveLaunchesHistory] = useState<LaunchData[]>([]);
+  const [launchesUpcoming, saveLaunchesUpcoming] = useState<LaunchData[]>([]);
   const [isPendingLaunch, setPendingLaunch] = useState(false);
   const [submitResponse, setSubmitResponse] = useState({ message: "", ok: false });
+  const [badgeInv,setBadgeInv] = useState({upcoming:true,history:true} as {[k:string]:boolean});
   const timer = React.useRef<NodeJS.Timeout>();
 
   const getLaunches = useCallback(async (limit = 0, page = 0, upcoming = true,sort="flightNumber",order="desc") => {
     try {
-      const fetchedLaunches = await httpGetLaunches(limit, page, upcoming,sort,order);
-      saveLaunches(fetchedLaunches);
+      setPendingLaunch(true);
+      const launchData = await httpGetLaunches(limit, page, upcoming,sort,order);
+        
+      upcoming? saveLaunchesUpcoming(launchData) : saveLaunchesHistory(launchData);
+      setPendingLaunch(false);
     } catch (error) {
       console.log("Error fetching launches:", error);
     }
@@ -48,8 +59,8 @@ function useLaunches():useLaunchesInterface  {
       });
       if (timer.current) clearTimeout(timer.current);
       if (response.ok) {
-        await getLaunches();
         setPendingLaunch(false);
+        setBadgeInv((prev)=>({...prev,upcoming:false}));
         setSubmitResponse({ message: "Launch submited", ok: true });
         timer.current = setTimeout(async () => {
           setSubmitResponse({ message: "", ok: true });
@@ -63,7 +74,7 @@ function useLaunches():useLaunchesInterface  {
         }, 2000);
       }
     },
-    [getLaunches]
+    []
   );
 
   const abortLaunch = useCallback(
@@ -74,6 +85,7 @@ function useLaunches():useLaunchesInterface  {
       if (response.ok) {
         await getLaunches();
         setPendingLaunch(false);
+        setBadgeInv((prev)=>({...prev,history:false}));
         setSubmitResponse({ message: "Lauch aborted", ok: true });
         timer.current = setTimeout(async () => {
           setSubmitResponse({ message: "", ok: true });
@@ -114,13 +126,19 @@ function useLaunches():useLaunchesInterface  {
   }, [getLaunches]);
 
   return {
-    launches,
+    launchesHistory,
+    saveLaunchesHistory,
+    launchesUpcoming,
+    saveLaunchesUpcoming,
     isPendingLaunch,
     submitLaunch,
     abortLaunch,
     submitResponse,
     resetLaunchData,
     getLaunches,
+    setPendingLaunch,
+    badgeInv,
+    setBadgeInv,
   };
 }
 export default useLaunches;

@@ -6,7 +6,7 @@ import NavTabs from "./components/NavTabs";
 import FixedBkg from "./components/FixedBkg";
 import usePlanets from "./hooks/usePlanets";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import useLaunches,{useLaunchesInterface} from "./hooks/useLaunches";
+import useLaunches, { useLaunchesInterface } from "./hooks/useLaunches";
 
 const Launch = lazy(() => import("./components/Launch"));
 const Upcoming = lazy(() => import("./components/Upcoming"));
@@ -25,7 +25,7 @@ export default function App(): JSX.Element {
   const planets = usePlanets();
   const location = useLocation();
   const useLaunchesHook = useLaunches();
-  const {submitResponse,isPendingLaunch} = useLaunchesHook;
+  const { submitResponse, isPendingLaunch } = useLaunchesHook;
   const [navState, setNavState] = React.useState(0);
 
   React.useEffect(() => {
@@ -37,11 +37,11 @@ export default function App(): JSX.Element {
   return (
     <>
       <CssBaseline />
-      <NavTabs {...{ navState, setNavState }} />
-      <TransitionGroup>
-        <CSSTransition timeout={200} classNames="page" key={location.key}>
-          <Suspense fallback={<LoadingCircular />}>
-            <LaunchesContext.Provider value={useLaunchesHook}>
+      <LaunchesContext.Provider value={useLaunchesHook}>
+        <NavTabs {...{ navState, setNavState }} />
+        <TransitionGroup>
+          <CSSTransition timeout={200} classNames="page" key={location.key}>
+            <Suspense fallback={<LoadingCircular />}>
               <Switch location={location}>
                 <Route path={["/", "/launch"]} exact>
                   <Launch />
@@ -53,10 +53,10 @@ export default function App(): JSX.Element {
                   <History />
                 </Route>
               </Switch>
-            </LaunchesContext.Provider>
-          </Suspense>
-        </CSSTransition>
-      </TransitionGroup>
+            </Suspense>
+          </CSSTransition>
+        </TransitionGroup>
+      </LaunchesContext.Provider>
       <Snackbar
         sx={{
           "& .MuiSnackbarContent-message": {

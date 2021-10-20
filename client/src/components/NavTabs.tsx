@@ -1,4 +1,4 @@
-import React, { SetStateAction } from "react";
+import React, { SetStateAction,useContext } from "react";
 import {
   Grid,
   Tabs,
@@ -15,17 +15,30 @@ import {
   List,
   ListItemText,
   Divider,
+  Badge,
 } from "@mui/material";
 import { Menu, ChevronRight, DoubleArrow, Schedule, History } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import planet from "../Assets/jupiter_32.png";
+import {LaunchesContext} from '../App';
 
 type NavTabProps = {
   navState: number;
   setNavState: React.Dispatch<SetStateAction<number>>;
 };
 export default function NavTabs({ navState, setNavState }: NavTabProps): JSX.Element {
+  const {badgeInv,setBadgeInv} = useContext(LaunchesContext);
   const [open, setOpen] = React.useState(false);
+
+  const handleNavState = (nv:number)=>{
+    setNavState(nv);
+    if(nv === 1){
+      setBadgeInv(prev=>({...prev,upcoming:true}));
+    }
+    if(nv === 2){
+      setBadgeInv(prev=>({...prev,history:true}));
+    }
+  }
   return (
     <>
       <AppBar position="relative" sx={{ bgcolor: "grey[800]", color: "text.primary" }}>
@@ -50,11 +63,11 @@ export default function NavTabs({ navState, setNavState }: NavTabProps): JSX.Ele
                   value={navState}
                   textColor="secondary"
                   indicatorColor="secondary"
-                  onChange={(e, nv) => setNavState(nv)}
+                  onChange={(e, nv) => handleNavState(nv)}
                 >
-                  <Tab icon={<DoubleArrow />} component={RouterLink} label="Launch" to="/launch" />
-                  <Tab icon={<Schedule />} component={RouterLink} label="Upcoming" to="/upcoming" />
-                  <Tab icon={<History />} component={RouterLink} label="History" to="/history" />
+                  <Tab icon={ <DoubleArrow/>} component={RouterLink} label="Launch" to="/launch" />
+                  <Tab icon={ <Badge color="primary" variant="dot" invisible={badgeInv.upcoming}><Schedule /></Badge>} component={RouterLink} label="Upcoming" to="/upcoming" />
+                  <Tab icon={ <Badge color="primary" variant="dot" invisible={badgeInv.history}><History /></Badge>} component={RouterLink} label="History" to="/history" />
                 </Tabs>
 
                 <IconButton sx={{ display: { xs: "block", sm: "none" } }} onClick={() => setOpen(true)}>

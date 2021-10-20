@@ -1,4 +1,4 @@
-import React, { useEffect,useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import {
   Container,
   Paper,
@@ -17,12 +17,19 @@ import {
 import { LaunchesContext } from "../App";
 
 export default function Upcoming(): JSX.Element {
-  const { launches, getLaunches, isPendingLaunch, abortLaunch, resetLaunchData } = useContext(LaunchesContext);
+  const { launchesUpcoming, saveLaunchesUpcoming, getLaunches, isPendingLaunch, abortLaunch, resetLaunchData } = useContext(LaunchesContext);
   const [active, setActive] = React.useState(0);
 
   useEffect(() => {
+    //on component mount
+    setActive(555);
     getLaunches(0, 0, true);
-  }, [getLaunches]);
+    //on component unmount
+    return () => {
+      saveLaunchesUpcoming([]);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box position="absolute" width="100%">
@@ -40,7 +47,12 @@ export default function Upcoming(): JSX.Element {
               Warning! Clicking on ✖ aborts the mission.
             </Typography>
           </Box>
-          <Box px={2} mb={2}>
+          <Box px={2} mb={2} sx={{ minHeight: "420px", position: "relative" }}>
+            {isPendingLaunch && active === 555 ? (
+              <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }}>
+                <CircularProgress color="secondary" size={64} />
+              </Box>
+            ) : null}
             <TableContainer component={Paper} elevation={3} square>
               <Table size="small">
                 <TableHead
@@ -63,6 +75,7 @@ export default function Upcoming(): JSX.Element {
                     <TableCell sx={{ width: "80px", textAlign: "center" }}>Abort</TableCell>
                   </TableRow>
                 </TableHead>
+
                 <TableBody
                   sx={{
                     "& tr:nth-of-type(odd)": {
@@ -73,8 +86,8 @@ export default function Upcoming(): JSX.Element {
                     },
                   }}
                 >
-                  {launches && launches.length
-                    ? launches
+                  {launchesUpcoming && launchesUpcoming.length
+                    ? launchesUpcoming
                         .filter((l) => l.upcoming)
                         .map((ln, ix) => (
                           <TableRow key={ix}>

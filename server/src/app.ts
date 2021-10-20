@@ -11,9 +11,9 @@ app.use(cors({
 app.use(morgan("tiny"))
 app.use(express.json());
 
-// emulate latency
+// // emulate latency
 // app.use((req,res,next)=>{
-//   setTimeout(()=>next(),500)
+//   setTimeout(()=>next(),1000)
 // })
 
 //API

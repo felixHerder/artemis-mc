@@ -14,30 +14,37 @@ import {
   TableFooter,
   TablePagination,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import { LaunchesContext } from "../App";
 
 export default function History(): JSX.Element {
-  const { launches, getLaunches } = useContext(LaunchesContext);
+  const { launchesHistory, saveLaunchesHistory, getLaunches, isPendingLaunch } = useContext(LaunchesContext);
   const [page, setPage] = useState(0);
   const [rows, setRows] = useState(10);
   const [order, setOrder] = useState(true);
   const [sort, setSort] = useState("flightNumber");
   useEffect(() => {
+    //on component mount
     getLaunches(10, 0, false);
-  }, [getLaunches]);
+    //on component unmount
+    return () => {
+      saveLaunchesHistory([]);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handlePageChange = async (page: number) => {
-    await getLaunches(rows, page, false, sort, !order ? 'asc' : 'desc');
+    await getLaunches(rows, page, false, sort, !order ? "asc" : "desc");
     setPage(page);
   };
   const handleRowChange = async (rows: number) => {
-    await getLaunches(rows, 0, false, sort, !order ? 'asc' : 'desc');
+    await getLaunches(rows, 0, false, sort, !order ? "asc" : "desc");
     setPage(0);
     setRows(rows);
   };
   const handleSort = async (field: string) => {
-    await getLaunches(rows, 0, false, field, order ? 'asc' : 'desc');
+    await getLaunches(rows, 0, false, field, order ? "asc" : "desc");
     setOrder(!order);
     setSort(field);
     setPage(0);
@@ -56,7 +63,12 @@ export default function History(): JSX.Element {
               Click on table column to sort.
             </Typography>
           </Box>
-          <Box px={2} mb={2}>
+          <Box px={2} mb={2} sx={{ minHeight: "420px", position: "relative" }}>
+            {isPendingLaunch ? (
+              <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }}>
+                <CircularProgress color="primary" size={64} />
+              </Box>
+            ) : null}
             <TableContainer component={Paper} elevation={3} square>
               <Table size="small">
                 <TableHead
@@ -113,8 +125,8 @@ export default function History(): JSX.Element {
                     },
                   }}
                 >
-                  {launches && launches.length
-                    ? launches
+                  {launchesHistory && launchesHistory.length
+                    ? launchesHistory
                         .filter((l) => !l.upcoming)
                         .map((ln, ix) => (
                           <TableRow key={ix}>

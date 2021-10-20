@@ -154,6 +154,7 @@ export default function Upcoming(): JSX.Element {
                                     minWidth: "64px",
                                     minHeight: "32px",
                                     lineHeight: 0.8,
+                                    fontSize:"24px"
                                   }}
                                   onClick={() => {
                                     setActive(ln.flightNumber);
@@ -161,7 +162,7 @@ export default function Upcoming(): JSX.Element {
                                   }}
                                   disabled={isPendingLaunch}
                                 >
-                                  ✖
+                                  &times;
                                 </Button>
                               ) : (
                                 <Box display="flex" justifyContent="center">

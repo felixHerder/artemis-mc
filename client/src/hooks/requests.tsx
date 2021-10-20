@@ -6,10 +6,16 @@ export async function httpGetPlanets(): Promise<PlanetData[]> {
   // Load planets and return as JSON.
 }
 
+export async function httpGetLaunchpads(): Promise<{name:string}[]> {
+  const response = await fetch(`${API_URL}/launchpads`);
+  return await response.json();
+  // Load launchpads and return as JSON.
+}
+
 export async function httpGetRockets(): Promise<{name:string}[]> {
   const response = await fetch(`${API_URL}/rockets`);
   return await response.json();
-  // Load planets and return as JSON.
+  // Load rockets and return as JSON.
 }
 export async function httpGetLaunches(limit = 0,page = 0,upcoming = false,sort="flightNumber",order="desc"): Promise<LaunchData[]> {
   const response = await fetch(`${API_URL}/launches?limit=${limit}&page=${page}&upcoming=${upcoming}&sort=${sort}&order=${order}`);

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext,useState } from "react";
 import {
   Container,
   Paper,
@@ -13,13 +13,14 @@ import {
   TableContainer,
   Button,
   CircularProgress,
+  TableFooter,
+  TablePagination,
 } from "@mui/material";
 import { LaunchesContext } from "../App";
 
 export default function Upcoming(): JSX.Element {
   const { launchesUpcoming, saveLaunchesUpcoming, getLaunches, isPendingLaunch, abortLaunch, resetLaunchData } = useContext(LaunchesContext);
-  const [active, setActive] = React.useState(0);
-
+  
   useEffect(() => {
     //on component mount
     setActive(555);
@@ -30,9 +31,31 @@ export default function Upcoming(): JSX.Element {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+  const [active, setActive] = useState(0);
+  const [page, setPage] = useState(0);
+  const [rows, setRows] = useState(10);
+  const [order, setOrder] = useState(true);
+  const [sort, setSort] = useState("flightNumber");
+
+  const handlePageChange = async (page: number) => {
+    await getLaunches(rows, page, true, sort, !order ? "asc" : "desc");
+    setPage(page);
+  };
+  const handleRowChange = async (rows: number) => {
+    await getLaunches(rows, 0, true, sort, !order ? "asc" : "desc");
+    setPage(0);
+    setRows(rows);
+  };
+  const handleSort = async (field: string) => {
+    await getLaunches(rows, 0, true, field, order ? "asc" : "desc");
+    setOrder(!order);
+    setSort(field);
+    setPage(0);
+  };
 
   return (
-    <Box position="absolute" width="100%">
+    <Box position="static" width="100%">
       <Container maxWidth="lg" sx={{ mt: 2, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "80vh" }}>
         <Paper variant="outlined" elevation={0} square sx={{ p: { xs: 0, sm: 1, md: 4 } }}>
           <Typography sx={{ m: 2 }} variant="h4" component="h2" align="center">
@@ -45,6 +68,8 @@ export default function Upcoming(): JSX.Element {
             </Typography>
             <Typography variant="body1" color="textSecondary">
               Warning! Clicking on ✖ aborts the mission.
+              <br/>
+              Click on table column to sort.
             </Typography>
           </Box>
           <Box px={2} mb={2} sx={{ minHeight: "420px", position: "relative" }}>
@@ -66,13 +91,33 @@ export default function Upcoming(): JSX.Element {
                     },
                   }}
                 >
-                  <TableRow>
-                    <TableCell>No.</TableCell>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Mission</TableCell>
-                    <TableCell>Rocket</TableCell>
-                    <TableCell>Destination</TableCell>
-                    <TableCell sx={{ width: "80px", textAlign: "center" }}>Abort</TableCell>
+                  <TableRow sx={{ "& button": { width: "100%", color: "secondary.contrastText",display:"block",textAlign:"left" } }}>
+                    <TableCell sx={{ width: "10%" }}>
+                      <Button color="secondary" onClick={() => handleSort("flightNumber")}>
+                        No.
+                      </Button>
+                    </TableCell>
+                    <TableCell sx={{ width: "15%" }}>
+                      <Button color="primary" onClick={() => handleSort("launchDate")}>
+                        Date
+                      </Button>
+                    </TableCell>
+                    <TableCell sx={{ width: "30%" }}>
+                      <Button color="primary" onClick={() => handleSort("mission")}>
+                        Mission
+                      </Button>
+                    </TableCell>
+                    <TableCell sx={{ width: "20%" }}>
+                      <Button color="primary" onClick={() => handleSort("rocket")}>
+                        Rocket
+                      </Button>
+                    </TableCell>
+                    <TableCell sx={{ width: "15%" }}>
+                      <Button color="primary" onClick={() => handleSort("destination")}>
+                        Destination
+                      </Button>
+                    </TableCell>
+                    <TableCell sx={{ width: "10%", textAlign: "center" }}>Abort</TableCell>
                   </TableRow>
                 </TableHead>
 
@@ -82,7 +127,7 @@ export default function Upcoming(): JSX.Element {
                       bgcolor: "background.paper",
                     },
                     "& tr:nth-of-type(even)": {
-                      bgcolor: "grey[800]",
+                      bgcolor: "grey.800",
                     },
                   }}
                 >

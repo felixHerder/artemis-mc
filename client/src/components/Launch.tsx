@@ -2,14 +2,16 @@ import React, { useContext, useEffect } from "react";
 import { Container, Paper, Typography, Box, Divider, InputLabel, FormControl, TextField, Button, Select, Grid, CircularProgress } from "@mui/material";
 import usePlanets from "../hooks/usePlanets";
 import useRockets from "../hooks/useRockets";
+import useLaunchpads from '../hooks/useLaunchpads';
 import { LaunchesContext } from "../App";
 
 export default function Launch(): JSX.Element {
   const { submitLaunch, isPendingLaunch, } = useContext(LaunchesContext);
   const planets = usePlanets();
   const rockets = useRockets();
+  const launchpads = useLaunchpads();
   return (
-    <Box position="absolute" width="100%">
+    <Box position="static" width="100%">
       <Container maxWidth="lg" sx={{ mt: 2, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "80vh" }}>
         <Paper variant="outlined" elevation={0} square sx={{ p: { xs: 0, sm: 1, md: 4 } }}>
           <Typography sx={{ m: 2 }} variant="h4" component="h2" align="center">
@@ -57,11 +59,22 @@ export default function Launch(): JSX.Element {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField fullWidth id="misionName" label="Mission Name" variant="outlined" name="missionName" required />
+                    <FormControl fullWidth variant="outlined">
+                      <InputLabel htmlFor="launchPad" required>Launch Pad</InputLabel>
+                      <Select id="launchPad" native label="Launch Pad" name="launchPad" required>
+                        <option aria-label="None" value="" />
+                        {launchpads.map((lpd, i) => (
+                          <option key={i} value={lpd.name}>
+                            {lpd.name}
+                          </option>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </Grid>
+
                   <Grid item xs={12}>
                     <FormControl fullWidth variant="outlined">
-                      <InputLabel htmlFor="rocket">Rocket Type</InputLabel>
+                      <InputLabel htmlFor="rocketType" required>Rocket Type</InputLabel>
                       <Select id="rocketType" native label="Rocket Type" name="rocketType" required>
                         <option aria-label="None" value="" />
                         {rockets.map((r, i) => (
@@ -72,9 +85,10 @@ export default function Launch(): JSX.Element {
                       </Select>
                     </FormControl>
                   </Grid>
+                  
                   <Grid item xs={12}>
                     <FormControl fullWidth variant="outlined">
-                      <InputLabel htmlFor="destination">Destination Exoplanet</InputLabel>
+                      <InputLabel htmlFor="destination" required>Destination Exoplanet</InputLabel>
                       <Select id="destination" native label="Destination Exoplanet" name="destination" required>
                         <option aria-label="None" value="" />
                         {planets.map((p, i) => (

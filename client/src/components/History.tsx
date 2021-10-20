@@ -20,10 +20,7 @@ import { LaunchesContext } from "../App";
 
 export default function History(): JSX.Element {
   const { launchesHistory, saveLaunchesHistory, getLaunches, isPendingLaunch } = useContext(LaunchesContext);
-  const [page, setPage] = useState(0);
-  const [rows, setRows] = useState(10);
-  const [order, setOrder] = useState(true);
-  const [sort, setSort] = useState("flightNumber");
+
   useEffect(() => {
     //on component mount
     getLaunches(10, 0, false);
@@ -33,6 +30,10 @@ export default function History(): JSX.Element {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const [page, setPage] = useState(0);
+  const [rows, setRows] = useState(10);
+  const [order, setOrder] = useState(true);
+  const [sort, setSort] = useState("flightNumber");
 
   const handlePageChange = async (page: number) => {
     await getLaunches(rows, page, false, sort, !order ? "asc" : "desc");
@@ -50,7 +51,7 @@ export default function History(): JSX.Element {
     setPage(0);
   };
   return (
-    <Box position="absolute" width="100%">
+    <Box position="static" width="100%">
       <Container maxWidth="lg" sx={{ mt: 2, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "80vh" }}>
         <Paper variant="outlined" elevation={0} square sx={{ p: { xs: 0, sm: 1, md: 4 } }}>
           <Typography sx={{ m: 2 }} variant="h4" component="h2" align="center">
@@ -82,7 +83,7 @@ export default function History(): JSX.Element {
                     },
                   }}
                 >
-                  <TableRow sx={{ "& button": { width: "100%", color: "secondary.contrastText" } }}>
+                  <TableRow sx={{ "& button": { width: "100%", color: "secondary.contrastText",display:"block",textAlign:"left" } }}>
                     <TableCell sx={{ width: "10%" }}>
                       <Button color="primary" onClick={() => handleSort("flightNumber")}>
                         No.

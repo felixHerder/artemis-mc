@@ -1,8 +1,9 @@
 import React, { Suspense, lazy, createContext } from "react";
-import { CssBaseline, Snackbar, CircularProgress, Box } from "@mui/material";
+import { CssBaseline, Snackbar, CircularProgress, Box, Container } from "@mui/material";
 import { Route, Switch, useLocation } from "react-router-dom";
 
 import NavTabs from "./components/NavTabs";
+import Footer from "./components/Footer";
 import FixedBkg from "./components/FixedBkg";
 import usePlanets from "./hooks/usePlanets";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
@@ -38,24 +39,27 @@ export default function App(): JSX.Element {
     <>
       <CssBaseline />
       <LaunchesContext.Provider value={useLaunchesHook}>
-        <NavTabs {...{ navState, setNavState }} />
-        <TransitionGroup>
-          <CSSTransition timeout={200} classNames="page" key={location.key}>
-            <Suspense fallback={<LoadingCircular />}>
-              <Switch location={location}>
-                <Route path={["/", "/launch"]} exact>
-                  <Launch />
-                </Route>
-                <Route path={"/upcoming"} exact>
-                  <Upcoming />
-                </Route>
-                <Route path={"/history"} exact>
-                  <History />
-                </Route>
-              </Switch>
-            </Suspense>
-          </CSSTransition>
-        </TransitionGroup>
+        <Box component="main" sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <NavTabs {...{ navState, setNavState }} />
+          <TransitionGroup component={null}>
+            <CSSTransition timeout={200} classNames="page" key={location.key}>
+              <Suspense fallback={<LoadingCircular />}>
+                <Switch location={location}>
+                  <Route path={["/", "/launch"]} exact>
+                    <Launch />
+                  </Route>
+                  <Route path={"/upcoming"} exact>
+                    <Upcoming />
+                  </Route>
+                  <Route path={"/history"} exact>
+                    <History />
+                  </Route>
+                </Switch>
+              </Suspense>
+            </CSSTransition>
+          </TransitionGroup>
+          <Footer />
+        </Box>
       </LaunchesContext.Provider>
       <Snackbar
         sx={{

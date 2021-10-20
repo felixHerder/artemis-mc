@@ -1,10 +1,11 @@
 import http from "http";
 import appToServe from "./app";
-import mongoose, { ConnectOptions } from "mongoose";
+import mongoose from "mongoose";
 
 import { loadPlanetsData } from "./models/planets.model";
 import {loadLaunchData} from './models/launches.model';
 import { loadRocketData } from "./models/rockets.model";
+import { loadLaunchpadData } from "./models/launchpads.model";
 
 const PORT = process.env.PORT || 8000;
 const MONGO_URL = "***REMOVED***?retryWrites=true&w=majority";
@@ -22,6 +23,7 @@ async function startServer() {
   await loadPlanetsData();
   await loadLaunchData();
   await loadRocketData();
+  await loadLaunchpadData();
   server.listen(PORT, () => console.log("listening on", PORT));
 }
 

@@ -7,7 +7,9 @@ dist/
 /coverage
 */coverage
 client/.env
-*/env
+server/.env
+.env
+*/.env
 
 public/
 */public/

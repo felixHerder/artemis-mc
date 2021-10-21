@@ -10,8 +10,6 @@ import { loadLaunchpadData } from "./models/launchpads.model";
 
 const PORT = process.env.PORT || 8000;
 const MONGO_URL = process.env.MONGO_URL as string;
-console.log(process.env.MONGO_URL);
-
 mongoose.connection.once("open", () => {
   console.log("MongoDB connection ready!");
 });

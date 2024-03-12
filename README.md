@@ -1,4 +1,4 @@
-Admin Control Panel for a rocket launch scheduling system using data from api.spacexdata.com.
+#### Admin Control Panel for a rocket launch scheduling system using data from api.spacexdata.com.
 
 Frontend is react with typescript and material-ui using a custom made webpack and babel config, complete with dev and prod ready npm scripts.
 
@@ -10,8 +10,13 @@ Client .env file must contain:
 API_URL
 
 Server .env file must contain:
+
 MONGO_PWD
+
 MONGO_USER
-MONGO_DB_URL # ex: mongodb+serv//...
+
+MONGO_DB_URL, ex:`mongodb+serv//...`
+
 PORT
+
 API_VERSION

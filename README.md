@@ -7,6 +7,7 @@ Backend is node with express using mongoose to connect to a atlas mongodb server
 Hosted on an aws ec2 private server instance using a nginx reverse proxy.
 
 Client .env file must contain:
+
 API_URL
 
 Server .env file must contain:
@@ -15,7 +16,7 @@ MONGO_PWD
 
 MONGO_USER
 
-MONGO_DB_URL, ex:`mongodb+serv//...`
+MONGO_DB_URL, ex:`mongodb+srv//...`
 
 PORT
 

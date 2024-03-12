@@ -1,15 +1,16 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 import http from "http";
 import appToServe from "./app";
 import mongoose from "mongoose";
 import { loadPlanetsData } from "./models/planets.model";
-import {loadLaunchData} from './models/launches.model';
+import { loadLaunchData } from "./models/launches.model";
 import { loadRocketData } from "./models/rockets.model";
 import { loadLaunchpadData } from "./models/launchpads.model";
 
 const PORT = process.env.PORT || 8000;
-const MONGO_URL = process.env.MONGO_URL as string;
+const mongoUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_DB_URL}/?retryWrites=true&w=majority&appName=Hyperion`;
+console.log(mongoUrl);
 mongoose.connection.once("open", () => {
   console.log("MongoDB connection ready!");
 });
@@ -19,7 +20,7 @@ mongoose.connection.on("error", (err) => {
 
 const server = http.createServer(appToServe);
 async function startServer() {
-  await mongoose.connect(MONGO_URL);
+  await mongoose.connect(mongoUrl);
   await loadPlanetsData();
   await loadLaunchData();
   await loadRocketData();
